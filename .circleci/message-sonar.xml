@@ -1,0 +1,31 @@
+<messageML>
+  <div>
+    <div style="margin-bottom: -3px;">
+      <img style="width: 15px;" src="${entity['ciMessage'].icon.url}" class="icon"/>
+      ${entity['ciMessage'].message.header}
+    </div>
+   </div>
+  <span class="tempo-text-color--normal"></span>
+  <br/>
+  <div>
+     <span class="tempo-text-color--normal">${entity['ciMessage'].message.subject}</span> 
+    <span class="tempo-bg-color--${entity['ciMessage'].message.tokenColor} tempo-text-color--white tempo-token">triggered</span>
+    by <b>${entity['ciMessage'].ci.user}</b>
+  </div>
+  <span class="tempo-text-color--secondary">Description:</span>
+  <span>${entity['ciMessage'].message.body} <b>${entity['ciMessage'].ci.project}</b></span>
+  <hr/>
+  <span class="tempo-text-color--secondary">PR:</span>
+   <span class="tempo-text-color--link">
+     <a href="${entity['ciMessage'].ci.pr_url}">
+       ${entity['ciMessage'].ci.pr_num}
+     </a>
+  </span>
+  -
+  <span class="tempo-text-color--secondary">Job:</span>
+  <span class="tempo-text-color--link">
+    <a href="${entity['ciMessage'].ci.build_url}">
+      ${entity['ciMessage'].ci.build_num}
+    </a>
+  </span>
+</messageML>

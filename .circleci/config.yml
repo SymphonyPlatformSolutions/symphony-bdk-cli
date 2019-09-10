@@ -1,0 +1,225 @@
+version: 2.1
+#####################################################
+# Runner config
+#####################################################
+defaults: &defaults
+  docker:
+    - image: circleci/node:latest
+  working_directory: ~/project
+
+gcp_defaults: &gcp_defaults
+  docker:
+    - image: google/cloud-sdk
+  working_directory: ~/project
+#####################################################
+# Anchors
+#####################################################
+virtualenv_install: &virtualenv_install
+  name: Virtualenv setup
+  command: |
+    apt install -y virtualenv
+    virtualenv ./.circleci/docker/tests/env
+#####################################################
+# Common Commands
+#####################################################
+# TODO: Author a private Orb. Status: CircleCI feature avaliation
+# Specific CI commands should be setup as an anchor.
+commands:
+  apt_repo_update:
+    description: update/fix apt repository
+    steps:
+      - run:
+          name: Update Apt Repository
+          command: |
+            #Fix issue with Debian Jessie that prevents to loa
+            printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+            echo -n "#deb http://deb.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
+            apt-get update
+
+  notify:
+    description: Send notification to Symphony using universal web hook
+    parameters:
+      webhookurl:
+        description: The web hook url to use. Can be bound to an env var
+        type: string
+      data_template:
+        description: Message template file in json format.
+        type: string
+      message_template:
+        description: MessageML file used to send message
+        type: string
+      make_notification:
+        description: Defines if notification should be sent.
+        type: string
+        default: "true"
+    steps:
+      - when:
+          condition: << parameters.make_notification >>
+          steps:
+            - run:
+                name: Send Notification
+                command: |
+                  if [ "<< parameters.make_notification >>" == "true" ];then
+                    apt-get install -qq -y gettext 
+                    envsubst < << parameters.data_template >> > ./.circleci/scripts/data.json
+                    curl -X POST -H "Content-Type:multipart/form-data" \
+                    -F 'data=@./.circleci/scripts/data.json' \
+                    -F 'message=@<< parameters.message_template >>' << parameters.webhookurl >>
+                  fi
+
+  
+#####################################################
+# Jobs
+#####################################################
+jobs:
+  dependencies_install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run:
+          name: Dependencies Install
+          command: |
+            npm install
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - ./
+
+  unit_tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+         name: Run Tests
+         command: |
+           npm install
+           npm run test
+           source ./.circleci/scripts/test-result
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - ./
+
+  coverage_tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+         name: Test Coverage
+         command: |
+           npm install
+           npm i coverage-percentage --save-dev
+           npm run test:coverage
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - ./
+  
+  build_project:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+         at: ~/project
+      - run:
+          name: Build Project
+          command: |
+            npm rebuild node-sass
+            npm run build
+      - run:
+          name: Generate Checksum
+          command: |
+            md5sum dist/app.bundle.js >> CHECKSUM.md5
+            md5sum dist/app.css >> CHECKSUM.md5
+            md5sum dist/app.html >> CHECKSUM.md5
+            md5sum dist/controller.bundle.js >> CHECKSUM.md5
+            md5sum dist/controller.html >> CHECKSUM.md5
+            md5sum dist/assets/app-icon.svg >> CHECKSUM.md5
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - dist
+            - Dockerfile
+            - .circleci
+            - coverage/junit/test-results.xml
+  
+  sonarqube_analysis:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: 
+          name: SonarQube Analysis Dependencies
+          command: |
+            sudo apt-get install -qq -y gettext
+
+            curl https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip \
+              -o sonar-scanner-cli-3.3.0.1492-linux.zip
+            unzip sonar-scanner-cli-3.3.0.1492-linux.zip
+
+            envsubst < .circleci/templates/sonar-project.properties.tpl > sonar-project.properties
+
+            envsubst < .circleci/templates/sonar-scanner.properties.tpl > sonar-scanner-3.3.0.1492-linux/conf/sonar-scanner.properties
+      - run: 
+          name: Run SonarQube Analysis
+          command: | 
+            chmod +x ./sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner
+
+            ./sonar-scanner-3.3.0.1492-linux/bin/sonar-scanner
+
+  notify_analysis:
+    <<: *gcp_defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - notify:
+          webhookurl: ${NOTIFICATION_WEBHOOK}
+          data_template: "./.circleci/data.json.tpl"
+          message_template: "./.circleci/message.xml"
+          make_notification: ${DEPLOY_TO_POD}
+
+
+#####################################################
+# Workflow
+#####################################################          
+workflows:
+  version: 2
+  weakly_code_analysis:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 0"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - dependencies_install
+      - unit_tests:
+          requires:
+            - dependencies_install
+      - coverage_tests:
+          requires:
+            - unit_tests
+      - sonarqube_analysis:
+          requires:
+            - coverage_tests
+      - notify_analysis:
+          requires:
+            - sonarqube_analysis
+  build:
+    jobs:
+      - dependencies_install
+      - unit_tests:
+          requires:
+            - dependencies_install
+      - coverage_tests:
+          requires:
+            - unit_tests
+      - build_project:
+          requires:
+            - coverage_tests

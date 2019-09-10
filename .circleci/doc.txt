@@ -1,0 +1,11 @@
+We have a new project here sms-sdk-cli and will need the following:
+ - A repo 
+ - A token to @symphonyplatformsolutions org with Read and Publish permissions, as this tool will need to be published to npm
+
+
+Test npm account
+------------------
+token: 5ce8c9e8-019c-4b49-9835-f49987b12a72
+
+marcpires-npm org
+marcelopires account
