@@ -7,5 +7,4 @@ export async function gitFlow() {
   deleteFolderRecursive(local);
   await getTemplateProject();
   await checkoutBranch();
-  // deleteFolderRecursive(local);
 }

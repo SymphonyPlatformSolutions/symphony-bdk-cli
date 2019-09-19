@@ -3,6 +3,7 @@ import fs from 'fs';
 import ncp from 'ncp';
 import path from 'path';
 import { promisify } from 'util';
+import {repoPath} from "../../utils/constants";
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -13,19 +14,17 @@ async function copyTemplateFiles(options) {
   });
 }
 
-export async function createProject(options) {
+export async function createExtensionApp(options) {
   options = {
     ...options,
-    targetDirectory: options.targetDirectory || process.cwd(),
+    targetDirectory: process.cwd(),
   };
 
   const currentFileUrl = import.meta.url;
-  const templateDir = path.resolve(
-    new URL(currentFileUrl).pathname,
-    '../../templates',
-    options.template.toLowerCase()
-  );
+  const templateDir = path.resolve(repoPath);
   options.templateDirectory = templateDir;
+
+  console.log('heuehuehuehue',process.cwd(), currentFileUrl, templateDir);
 
   try {
     await access(templateDir, fs.constants.R_OK);
@@ -34,8 +33,8 @@ export async function createProject(options) {
     process.exit(1);
   }
 
-  console.log('Copy project files');
-  await copyTemplateFiles(options);
+  console.log('Copy project files', options);
+  // await copyTemplateFiles(options);
 
   console.log('%s Project ready', chalk.green.bold('DONE'));
   return true;
