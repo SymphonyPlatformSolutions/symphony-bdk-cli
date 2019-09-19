@@ -2,10 +2,13 @@
   "name": "sms-sdk-cli",
   "version": "1.0.0",
   "description": "Symphony Market Solutions CLI to bootstrap new projects.",
-  "main": "bin/create-extension-app.js",
+  "main": "./bin/create-extension-app.js",
   "bin": {
-    "create-extension-app": "./bin/create-extension-app"
+    "sms-sdk-cli": "./bin/create-extension-app.js"
   },
+  "files": [
+    "./bin/create-extension-app.js"
+  ],
   "publishConfig": {
     "access": "public"
   },

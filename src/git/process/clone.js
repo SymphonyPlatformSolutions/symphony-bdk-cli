@@ -6,9 +6,9 @@ const os = require('os');
 var nodegit = require('nodegit'),
   path = require('path');
 
-var url = "git@github.com:SymphonyPlatformSolutions/sms-dev-fe-template-app.git",
+const url = "git@github.com:SymphonyPlatformSolutions/sms-dev-fe-template-app.git",
   userName = "git",
-  certPath = "./src/git/cert/";
+  certPath = `${os.homedir()}/.ssh/`;
 
 var pubPath = path.join(certPath, 'id_rsa.pub');
 var privPath = path.join(certPath, 'id_rsa');
