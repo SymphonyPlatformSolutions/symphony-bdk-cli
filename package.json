@@ -1,0 +1,29 @@
+{
+  "name": "sms-sdk-cli",
+  "version": "1.0.0",
+  "description": "Symphony Market Solutions CLI to bootstrap new projects.",
+  "main": "bin/create-extension-app.js",
+  "bin": {
+    "create-extension-app": "bin/create-extension-app"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "node ./bin/create-extension-app.js"
+  },
+  "keywords": [
+    "cli",
+    "create-extension-app"
+  ],
+  "author": "Gabriel Luiz <gabriel.luiz@unesp.br>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^3.0.1",
+    "esm": "^3.2.25",
+    "inquirer": "^7.0.0",
+    "nodegit": "^0.26.1"
+  },
+  "repository": "git@github.com:SymphonyPlatformSolutions/sms-sdk-cli.git"
+}
