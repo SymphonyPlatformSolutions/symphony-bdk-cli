@@ -4,7 +4,7 @@
   "description": "Symphony Market Solutions CLI to bootstrap new projects.",
   "main": "bin/create-extension-app.js",
   "bin": {
-    "create-extension-app": "bin/create-extension-app"
+    "create-extension-app": "./bin/create-extension-app"
   },
   "publishConfig": {
     "access": "public"
