@@ -1,15 +1,17 @@
 'use strict';
 
+import {local} from "../../../utils/constants";
+
 const os = require('os');
 var nodegit = require('nodegit'),
   path = require('path');
 
 var url = "git@github.com:SymphonyPlatformSolutions/sms-dev-fe-template-app.git",
-  local = ".tmp",
-  userName = "git";
+  userName = "git",
+  certPath = "./src/git/cert/";
 
-var pubPath = path.join(os.homedir(), 'Git/cli/sms-sdk-cli/src/git/cert/', 'id_rsa.pub');
-var privPath = path.join(os.homedir(), 'Git/cli/sms-sdk-cli/src/git/cert/', 'id_rsa');
+var pubPath = path.join(certPath, 'id_rsa.pub');
+var privPath = path.join(certPath, 'id_rsa');
 
 var cred = nodegit.Cred.sshKeyNew(
   userName,

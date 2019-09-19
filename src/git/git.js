@@ -1,12 +1,11 @@
 import {getTemplateProject} from "./process/clone";
 import {checkoutBranch} from "./process/checkout";
 import {deleteFolderRecursive} from "../files/utils";
-
-const local = ".tmp";
+import {local} from "../../utils/constants";
 
 export async function gitFlow() {
   deleteFolderRecursive(local);
   await getTemplateProject();
-  checkoutBranch();
+  await checkoutBranch();
   // deleteFolderRecursive(local);
 }

@@ -1,9 +1,11 @@
+import {local} from "../../../utils/constants";
+
 const os = require('os');
 
 var nodegit = require('nodegit'),
   path = require('path');
 
-var repoPath = path.join(os.homedir(), 'Git/cli/sms-sdk-cli/.tmp/');
+var repoPath = path.join('./', local);
 var branch = 'remotes/origin/develop';
 
 export const checkoutBranch = () => {

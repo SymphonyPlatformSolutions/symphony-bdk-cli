@@ -23,6 +23,7 @@
     "commander": "^3.0.1",
     "esm": "^3.2.25",
     "inquirer": "^7.0.0",
+    "ncp": "^2.0.0",
     "nodegit": "^0.26.1"
   },
   "repository": "git@github.com:SymphonyPlatformSolutions/sms-sdk-cli.git"
