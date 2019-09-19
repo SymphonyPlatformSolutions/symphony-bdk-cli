@@ -32,7 +32,7 @@ var cloneOpts = {
 export async function getTemplateProject() {
   // Clone a given repository into the `./tmp` folder.
   return await nodegit.Clone(url, local, cloneOpts).then(function (repo) {
-    console.log("Cloned " + path.basename(url) + " to " + repo.workdir());
+    console.log("Cloned repository");
   }).catch(function (err) {
     console.log(err);
   });

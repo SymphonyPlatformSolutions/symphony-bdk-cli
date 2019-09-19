@@ -23,8 +23,6 @@ export async function createExtensionApp(options) {
   const templateDir = path.resolve(repoPath);
   options.templateDirectory = templateDir;
 
-  console.log('Where to copy, from',process.cwd(), templateDir);
-
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
@@ -35,6 +33,5 @@ export async function createExtensionApp(options) {
   console.log('Copy project files', options);
   await copyTemplateFiles(options);
 
-  console.log('%s Project ready', chalk.green.bold('DONE'));
   return true;
 }

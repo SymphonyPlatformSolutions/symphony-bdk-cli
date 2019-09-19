@@ -8,16 +8,13 @@ export const checkoutBranch = () => {
   return new Promise((resolve, reject) =>
     nodegit.Repository.open(repoPath).then(function(repo) {
       return repo.getCurrentBranch().then(function(ref) {
-        console.log("On " + ref.shorthand() + " " + ref.target());
-
-        console.log("Checking out develop");
+        console.log("Checking out repository");
         var checkoutOpts = {
           checkoutStrategy: nodegit.Checkout.STRATEGY.FORCE
         };
         return repo.checkoutBranch(branch, checkoutOpts);
       }).then(function () {
         return repo.getCurrentBranch().then(function(ref) {
-          console.log("On " + ref.shorthand() + " " + ref.target());
         });
       });
     })
