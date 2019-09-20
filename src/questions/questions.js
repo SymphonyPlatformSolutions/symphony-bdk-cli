@@ -2,19 +2,8 @@ import inquirer from "inquirer";
 const chalk = require('chalk');
 
 async function promptForMissingOptions(options) {
-  const defaultTemplate = 'JavaScript';
-  if (options.skipPrompts) {
-    return {
-      ...options,
-      template: options.template || defaultTemplate,
-    };
-  }
-
+  console.log(chalk.bold('Please answer the question bellow'));
   const questions = [];
-
-  console.log(chalk.blue('This template will guide you through the process to create an extension app template'));
-  console.log(chalk.blue('Please answer the question bellow'));
-
   if (!options.projectName) {
     questions.push({
       name: 'projectName',

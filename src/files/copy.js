@@ -4,6 +4,7 @@ import ncp from 'ncp';
 import path from 'path';
 import { promisify } from 'util';
 import {repoPath} from "../../utils/constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../utils/spinner";
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -15,6 +16,7 @@ async function copyTemplateFiles(options) {
 }
 
 export async function createExtensionApp(options) {
+  spinnerStart(chalk.bold('Coping files'));
   options = {
     ...options,
     targetDirectory: process.cwd(),
@@ -26,12 +28,11 @@ export async function createExtensionApp(options) {
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
-    console.error('%s Invalid template name', chalk.red.bold('ERROR'));
+    spinnerError('%s Invalid template name', chalk.red.bold('ERROR'));
     process.exit(1);
   }
 
-  console.log('Copy project files', options);
   await copyTemplateFiles(options);
-
+  spinnerStop(chalk.bold('Files ') + chalk.green.bold('COPIED'));
   return true;
 }

@@ -1,6 +1,7 @@
 'use strict';
-
+import chalk from "chalk";
 import {local} from "../../../utils/constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
 
 const os = require('os');
 var nodegit = require('nodegit'),
@@ -31,9 +32,10 @@ var cloneOpts = {
 
 export async function getTemplateProject() {
   // Clone a given repository into the `./tmp` folder.
+  spinnerStart(chalk.bold('Getting template app'));
   return await nodegit.Clone(url, local, cloneOpts).then(function (repo) {
-    console.log("Cloned repository");
+    spinnerStop(chalk.bold('Template ') + chalk.green.bold("CLONED"));
   }).catch(function (err) {
-    console.log(err);
+    spinnerError(err);
   });
-};
+}

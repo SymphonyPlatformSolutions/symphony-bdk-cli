@@ -1,10 +1,11 @@
 import Listr from 'listr';
 import { projectInstall } from 'pkg-install';
+import chalk from 'chalk';
 
 export async function initializeProject() {
   const tasks = new Listr([
     {
-      title: 'Install dependencies',
+      title: chalk.bold('Install dependencies'),
       task: () =>
         projectInstall({
           cwd: process.cwd(),

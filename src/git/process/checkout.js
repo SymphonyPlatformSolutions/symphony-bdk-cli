@@ -1,14 +1,16 @@
 import {local, repoPath} from "../../../utils/constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
+import chalk from "chalk";
 
 const os = require('os');
 const nodegit = require('nodegit');
 const branch = 'remotes/origin/develop';
 
 export const checkoutBranch = () => {
+  spinnerStart('Checking out repository');
   return new Promise((resolve, reject) =>
     nodegit.Repository.open(repoPath).then(function(repo) {
       return repo.getCurrentBranch().then(function(ref) {
-        console.log("Checking out repository");
         var checkoutOpts = {
           checkoutStrategy: nodegit.Checkout.STRATEGY.FORCE
         };
@@ -18,6 +20,12 @@ export const checkoutBranch = () => {
         });
       });
     })
-  .then(() => resolve())
-  .catch(() => reject(new Error('Error checking out repository'))))
+  .then(() => {
+    spinnerStop(chalk.green.bold('Checked'));
+    resolve();
+  })
+  .catch(() => {
+    spinnerError('Error checking out repository');
+    reject(new Error('Error checking out repository'));
+  }))
 };
