@@ -6,6 +6,8 @@ import {deleteFolder} from "./files/utils";
 import {local} from "../utils/constants";
 import {initializeProject} from "./initializer/initializer";
 import chalk from "chalk";
+import {writeConfigFile} from "./files/config";
+import {updatePackageJson} from "./files/packageJson";
 
 export async function cli(args) {
   console.log(chalk.bold('This template will guide you through the process to create an extension app template'));
@@ -13,6 +15,8 @@ export async function cli(args) {
   options = await getVariableValues(options);
   deleteFolder(local);
   await gitFlow();
+  writeConfigFile(options);
+  updatePackageJson(options);
   await createExtensionApp(options);
   await initializeProject();
   deleteFolder(local);

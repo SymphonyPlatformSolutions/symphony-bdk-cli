@@ -9,8 +9,8 @@ import {spinnerError, spinnerStart, spinnerStop} from "../../utils/spinner";
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
-async function copyTemplateFiles(options) {
-  return copy(options.templateDirectory, options.targetDirectory, {
+async function copyFiles(origin, destiny) {
+  return copy(origin, destiny, {
     clobber: false,
   });
 }
@@ -32,7 +32,7 @@ export async function createExtensionApp(options) {
     process.exit(1);
   }
 
-  await copyTemplateFiles(options);
+  await copyFiles(options.templateDirectory, options.targetDirectory);
   spinnerStop(chalk.bold('Files ') + chalk.green.bold('COPIED'));
   return true;
 }

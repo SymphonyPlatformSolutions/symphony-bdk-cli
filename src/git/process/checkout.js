@@ -1,4 +1,4 @@
-import {local, repoPath} from "../../../utils/constants";
+import {repoPath} from "../../../utils/constants";
 import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
 import chalk from "chalk";
 
@@ -22,7 +22,7 @@ export const checkoutBranch = () => {
     })
   .then(() => {
     spinnerStop(chalk.green.bold('Checked'));
-    resolve();
+    return resolve();
   })
   .catch(() => {
     spinnerError('Error checking out repository');
