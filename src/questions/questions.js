@@ -2,19 +2,8 @@ import inquirer from "inquirer";
 const chalk = require('chalk');
 
 async function promptForMissingOptions(options) {
-  const defaultTemplate = 'JavaScript';
-  if (options.skipPrompts) {
-    return {
-      ...options,
-      template: options.template || defaultTemplate,
-    };
-  }
-
+  console.log(chalk.bold('Please answer the question bellow'));
   const questions = [];
-
-  console.log(chalk.blue('This template will guide you through the process to create an extension app template'));
-  console.log(chalk.blue('Please answer the question bellow'));
-
   if (!options.projectName) {
     questions.push({
       name: 'projectName',
@@ -23,10 +12,46 @@ async function promptForMissingOptions(options) {
     });
   }
 
+  if (!options.description) {
+    questions.push({
+      name: 'description',
+      message: 'What\'s the project description?',
+      default: null,
+    });
+  }
+
+  if (!options.githubUrl) {
+    questions.push({
+      name: 'githubUrl',
+      message: 'What\'s the github project url?',
+      default: null,
+    });
+  }
+
+  if (!options.issueUrl) {
+    questions.push({
+      name: 'issueUrl',
+      message: 'What\'s the issue project url?',
+      default: null,
+    });
+  }
+
+  if (!options.author) {
+    questions.push({
+      name: 'author',
+      message: 'What\'s the author name?',
+      default: null,
+    });
+  }
+
   const answers = await inquirer.prompt(questions);
   return {
     ...options,
     projectName: options.projectName || answers.projectName,
+    description: options.description || answers.description,
+    githubUrl: options.githubUrl || answers.githubUrl,
+    issueUrl: options.issueUrl || answers.issueUrl,
+    author: options.author || answers.author,
   };
 }
 
