@@ -17,7 +17,8 @@ var privPath = path.join(certPath, 'id_rsa');
 var cred = nodegit.Cred.sshKeyNew(
   userName,
   pubPath,
-  privPath);
+  privPath,
+  '');
 
 var cloneOpts = {
   fetchOpts: {
