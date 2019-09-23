@@ -1,8 +1,8 @@
-import {local} from "../../utils/constants";
+import {local} from "../../../utils/constants";
 const fs = require('fs');
 const path = require('path');
 
-const configPath = path.join(local, '/extension-app/public/config/config.js')
+const configPath = path.join(local, '/extension-app/public/config/config.js');
 
 const getConfigString = (options) => {
   return `const APP_CONFIG = {};

@@ -1,19 +1,12 @@
 import chalk from 'chalk';
 import fs from 'fs';
-import ncp from 'ncp';
 import path from 'path';
 import { promisify } from 'util';
-import {repoPath} from "../../utils/constants";
-import {spinnerError, spinnerStart, spinnerStop} from "../../utils/spinner";
+import {repoPath} from "../../../utils/constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
+import {copyFiles} from "../utils";
 
 const access = promisify(fs.access);
-const copy = promisify(ncp);
-
-async function copyFiles(origin, destiny) {
-  return copy(origin, destiny, {
-    clobber: false,
-  });
-}
 
 export async function createExtensionApp(options) {
   spinnerStart(chalk.bold('Coping files'));
