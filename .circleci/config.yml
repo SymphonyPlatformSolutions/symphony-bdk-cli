@@ -115,7 +115,7 @@ jobs:
          command: |
            yarn
            yarn add coverage-percentage --save-dev
-           yarn test:coverage
+           yarn test
       - persist_to_workspace:
           root: ~/project
           paths:

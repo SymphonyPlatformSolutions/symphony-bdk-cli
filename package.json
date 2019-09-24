@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "node ./bin/create-extension-app.js",
-    "test": "echo true"
+    "test": "echo \"No test specified\" && exit 0"
   },
   "keywords": [
     "cli",
