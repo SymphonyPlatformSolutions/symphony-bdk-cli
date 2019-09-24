@@ -129,24 +129,11 @@ jobs:
       - run:
           name: Build Project
           command: |
-            yarn add --force node-sass
-            yarn run build
-      - run:
-          name: Generate Checksum
-          command: |
-            md5sum dist/app.bundle.js >> CHECKSUM.md5
-            md5sum dist/app.css >> CHECKSUM.md5
-            md5sum dist/app.html >> CHECKSUM.md5
-            md5sum dist/controller.bundle.js >> CHECKSUM.md5
-            md5sum dist/controller.html >> CHECKSUM.md5
-            md5sum dist/assets/app-icon.svg >> CHECKSUM.md5
+            yarn build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - dist
-            - Dockerfile
-            - .circleci
-            - coverage/junit/test-results.xml
+            - ./
   
   sonarqube_analysis:
     <<: *defaults
