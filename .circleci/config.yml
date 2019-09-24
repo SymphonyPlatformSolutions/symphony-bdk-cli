@@ -217,9 +217,9 @@ workflows:
       - unit_tests:
           requires:
             - dependencies_install
-#      - coverage_tests:
-#          requires:
-#            - unit_tests
-#      - build_project:
-#          requires:
-#            - coverage_tests
+      - coverage_tests:
+          requires:
+            - unit_tests
+      - build_project:
+          requires:
+            - coverage_tests

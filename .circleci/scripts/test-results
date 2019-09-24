@@ -1,0 +1,12 @@
+#!/bin/env bash
+
+RESULT=$?
+
+if [ $RESULT != 0 ];
+then
+  echo 'Test failed'
+  exit 1
+else
+   echo 'Test passed'
+   exit 0
+fi
