@@ -83,7 +83,7 @@ jobs:
       - run:
           name: Dependencies Install
           command: |
-            npm install
+            yarn
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -97,8 +97,8 @@ jobs:
       - run:
          name: Run Tests
          command: |
-           npm install
-           npm run test
+           yarn
+           yarn test
            source ./.circleci/scripts/test-result
       - persist_to_workspace:
           root: ~/project
@@ -113,9 +113,9 @@ jobs:
       - run:
          name: Test Coverage
          command: |
-           npm install
-           npm i coverage-percentage --save-dev
-           npm run test:coverage
+           yarn
+           yarn add coverage-percentage --save-dev
+           yarn test:coverage
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -129,8 +129,8 @@ jobs:
       - run:
           name: Build Project
           command: |
-            npm rebuild node-sass
-            npm run build
+            yarn add --force node-sass
+            yarn run build
       - run:
           name: Generate Checksum
           command: |
