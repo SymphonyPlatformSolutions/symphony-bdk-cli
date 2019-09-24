@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "start": "node ./bin/create-extension-app.js",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "build": "yarn link && yarn"
   },
   "keywords": [
     "cli",
