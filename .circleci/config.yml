@@ -83,7 +83,7 @@ jobs:
       - run:
           name: Dependencies Install
           command: |
-            npm install
+            yarn
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -97,8 +97,8 @@ jobs:
       - run:
          name: Run Tests
          command: |
-           npm install
-           npm run test
+           yarn
+           yarn test
            source ./.circleci/scripts/test-result
       - persist_to_workspace:
           root: ~/project
@@ -113,9 +113,9 @@ jobs:
       - run:
          name: Test Coverage
          command: |
-           npm install
-           npm i coverage-percentage --save-dev
-           npm run test:coverage
+           yarn
+           yarn add coverage-percentage --save-dev
+           yarn test
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -129,24 +129,11 @@ jobs:
       - run:
           name: Build Project
           command: |
-            npm rebuild node-sass
-            npm run build
-      - run:
-          name: Generate Checksum
-          command: |
-            md5sum dist/app.bundle.js >> CHECKSUM.md5
-            md5sum dist/app.css >> CHECKSUM.md5
-            md5sum dist/app.html >> CHECKSUM.md5
-            md5sum dist/controller.bundle.js >> CHECKSUM.md5
-            md5sum dist/controller.html >> CHECKSUM.md5
-            md5sum dist/assets/app-icon.svg >> CHECKSUM.md5
+            yarn build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - dist
-            - Dockerfile
-            - .circleci
-            - coverage/junit/test-results.xml
+            - ./
   
   sonarqube_analysis:
     <<: *defaults

@@ -9,19 +9,23 @@
   "files": [
     "./bin/create-extension-app.js"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "start": "node ./bin/create-extension-app.js",
-    "test": "echo true"
+    "test": "echo \"No test specified\" && exit 0",
+    "build": "yarn link && yarn"
   },
   "keywords": [
     "cli",
     "create-extension-app"
   ],
-  "author": "Gabriel Luiz <gabriel.luiz@unesp.br>",
-  "license": "MIT",
+  "repository": "git@github.com:SymphonyPlatformSolutions/sms-sdk-cli.git",
+  "author": "Market Solutions",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SymphonyPlatformSolutions/sms-sdk-cli/issues"
+  },
+  "private": true,
+  "homepage": "https://github.com/SymphonyPlatformSolutions/sms-sdk-cli#readme",
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^3.0.1",
@@ -32,6 +36,5 @@
     "nodegit": "^0.26.1",
     "ora": "^3.4.0",
     "pkg-install": "^1.0.0"
-  },
-  "repository": "git@github.com:SymphonyPlatformSolutions/sms-sdk-cli.git"
+  }
 }
