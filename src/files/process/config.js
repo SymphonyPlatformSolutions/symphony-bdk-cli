@@ -5,6 +5,7 @@ const path = require('path');
 const configPath = path.join(local, '/extension-app/public/config/config.js');
 
 const getConfigString = (options) => {
+  console.log(options);
   return `const APP_CONFIG = {};
   Object.defineProperties(APP_CONFIG,
     {

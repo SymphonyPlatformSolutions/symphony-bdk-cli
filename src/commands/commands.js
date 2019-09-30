@@ -1,24 +1,39 @@
-import chalk from "chalk";
-import {spinnerStart, spinnerStop} from "../../utils/spinner";
+export const COMMANDS = {
+  CREATE_EXT_APP: 0,
+  CREATE_BOT: 1,
+  CREATE_CERTIFICATE: 2,
+}
 
 const commander = require('commander');
 const program = new commander.Command();
 program.version('0.0.1');
 
-//Add posible values of command
+// Available Commands
 program
-  .option('--create-extension-app','createExtensionApp', false);
+  .option('--create-extension-app','createExtensionApp', false)
+  .option('--create-bot', 'createBot', false)
+  .option('--generate-certificates', 'generateCertificates', false);
 
-//Parse response into an object
 var commands;
+
+const getCommand = (options) => {
+  return options.createExtensionApp
+    ? COMMANDS.CREATE_EXT_APP
+    : options.createBot
+      ? COMMANDS.CREATE_BOT
+      : options.generateCertificates
+        ? COMMANDS.CREATE_CERTIFICATE
+        : -1;
+};
+
 const parseResponse = (args) => {
-  spinnerStart('Parsing commands');
   let options = program.parse(args);
   commands = {
     ...commands,
-    createExtensionApp: options.createExtensionApp
+    command: getCommand(options),
+    program: program,
+    cwd: process.cwd(),
   };
-  spinnerStop(chalk.bold('Commands ') + chalk.green.bold("PARSED"));
   return commands
 };
 

@@ -38,6 +38,7 @@
     "pkg-install": "^1.0.0"
   },
   "devDependencies": {
+    "njwt": "^1.0.0",
     "terminal-image": "^0.2.0"
   }
 }
