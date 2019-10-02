@@ -31,6 +31,16 @@ export var deleteFolderRecursive = function(path) {
   }
 };
 
+export var deleteFileSync = function(filePath) {
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+};
+
+export var readFileSync = function (filePath) {
+  return fs.readFileSync(filePath,'utf-8');
+};
+
 export var deleteFolder = (path) => {
   spinnerStart(chalk.bold('Deleting temp folders'));
   deleteFolderRecursive(path);

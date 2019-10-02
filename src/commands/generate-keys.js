@@ -1,4 +1,5 @@
 import {getAnwsers} from "../questions/generate-keys";
+import { deleteFileSync, readFileSync } from "../files/utils";
 
 const execSync = require('child_process').execSync;
 
@@ -11,37 +12,31 @@ const generateKeys = async (options) => {
   const awnsers = await getAnwsers(options);
   const {
     botId,
-    privateKeyName,
-    publicKeyName,
-    countryCode,
-    stateProvince,
-    locality,
-    organizationName,
-    organizationUnit,
-    commonName,
+    botEmailAddress,
   } = awnsers;
 
   const claims = {
     'sub': botId,
   };
 
-  const certArgs = `/C=${countryCode}/ST=${stateProvince}/L=${locality}/O=${organizationName}/OU=${organizationUnit}/CN=${commonName}`;
+  const certArgs = `/emailAddress=${botEmailAddress}`;
 
   const targetFolder = `${options.cwd}/cert`;
   fs.existsSync(targetFolder) || fs.mkdirSync(targetFolder);
   process.chdir(targetFolder);
-  execSync(`openssl genrsa -out ${privateKeyName}.pem 4096`);
-  execSync(`openssl req -newkey rsa:4096 -x509 -key ${privateKeyName}.pem -out ${publicKeyName}.cer -subj ${certArgs}`);
-  execSync(`openssl pkcs8 -topk8 -nocrypt -in ${privateKeyName}.pem -out ${privateKeyName}.pkcs8`);
-  execSync(`openssl x509 -pubkey -noout -in ${publicKeyName}.cer > ${publicKeyName}.pem`);
-  let contents = fs.readFileSync(path.resolve(targetFolder,`${privateKeyName}.pkcs8`), 'utf8');
+  execSync(`openssl genrsa -out private-${botId}.pem 4096`);
+  execSync(`openssl req -newkey rsa:4096 -x509 -key private-${botId}.pem -out public-${botId}.cer -subj ${certArgs}`);
+  execSync(`openssl pkcs8 -topk8 -nocrypt -in private-${botId}.pem -out private-${botId}.pkcs8`);
+  execSync(`openssl x509 -pubkey -noout -in public-${botId}.cer > public-${botId}.pem`);
+  let contents = fs.readFileSync(path.resolve(targetFolder,`private-${botId}.pkcs8`), 'utf8');
+  deleteFileSync(`${targetFolder}/public-${botId}.cer`);
+  deleteFileSync(`${targetFolder}/private-${botId}.pem`);
+  const publicCert = readFileSync(`${targetFolder}/public-${botId}.pem`);
   var jwt = nJwt.create(claims, contents, 'RS512');
   jwt.setExpiration(new Date().getTime() + (3 * 60 * 1000));
+  console.log(publicCert);
   var token = jwt.compact();
-  console.log(chalk.bold('Token: '));
-  console.log('');
-  console.log('');
-  console.log('');
+  console.log(chalk.bold('JWT Token: '));
   console.log(token)
 };
 
