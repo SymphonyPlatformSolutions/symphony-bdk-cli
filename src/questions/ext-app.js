@@ -55,6 +55,6 @@ async function promptForMissingOptions(options) {
   };
 }
 
-export async function getVariableValues(options) {
+export async function getAnwsers(options) {
   return await promptForMissingOptions(options);
 }

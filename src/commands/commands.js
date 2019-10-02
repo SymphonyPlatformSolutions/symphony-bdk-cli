@@ -1,24 +1,47 @@
-import chalk from "chalk";
-import {spinnerStart, spinnerStop} from "../../utils/spinner";
+export const COMMANDS = {
+  CREATE_EXT_APP: 0,
+  CREATE_BOT: 1,
+  CREATE_CERTIFICATE: 2,
+  CHECK_DEPS: 3,
+}
 
 const commander = require('commander');
 const program = new commander.Command();
-program.version('0.0.1');
+program.version('0.0.1')
 
-//Add posible values of command
+// Available Commands
 program
-  .option('--create-extension-app','createExtensionApp', false);
+  .description('This tool helps to generate the proper RSA files to be used on symphony \n' +
+    'and also, helps the fast creation of bots and extension apps')
+  .option('--ext','Creates an extension app boilerplate', false)
+  .option('--bot', 'Creates an Symphony bot application', false)
+  .option('--run', 'To be used along side --ext or --bot, it starts the project', false)
+  .option('--gen-certs', 'Generates they RSA key pair and outputs a valid JWT token for immediate testing', false)
+  .option('--check-deps', 'Checks if the system has all the required dependencies to run this project', false);
 
-//Parse response into an object
 var commands;
+
+const getCommand = (options) => {
+  return options.ext
+    ? COMMANDS.CREATE_EXT_APP
+    : options.bot
+      ? COMMANDS.CREATE_BOT
+      : options.genCerts
+        ? COMMANDS.CREATE_CERTIFICATE
+        : options.checkDeps
+          ? COMMANDS.CHECK_DEPS
+          : -1;
+};
+
 const parseResponse = (args) => {
-  spinnerStart('Parsing commands');
   let options = program.parse(args);
   commands = {
     ...commands,
-    createExtensionApp: options.createExtensionApp
+    command: getCommand(options),
+    program: program,
+    run: options.run,
+    cwd: process.cwd(),
   };
-  spinnerStop(chalk.bold('Commands ') + chalk.green.bold("PARSED"));
   return commands
 };
 

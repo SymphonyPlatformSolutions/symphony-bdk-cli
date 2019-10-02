@@ -1,20 +1,39 @@
-import { getCommands } from "./commands/commands";
-import { getVariableValues } from "./questions/questions";
-import {gitFlow} from "./git/git";
-import {deleteFolder} from "./files/utils";
-import {local} from "../utils/constants";
-import {initializeProject} from "./initializer/initializer";
-import chalk from "chalk";
-import {filesFlow} from "./files/files";
+import {COMMANDS, getCommands} from "./commands/commands";
+import createExtensionApp from "./commands/create-ext-app";
+import createBot from "./commands/create-bot";
+import generateKeys from "./commands/generate-keys";
+import checkDeps from "./commands/check-deps";
+import path from 'path';
 
-export async function cli(args) {
-  console.log(chalk.bold('This template will guide you through the process to create an extension app template'));
+const terminalImage = require('terminal-image');
+
+const init = async (args) => {
   let options = getCommands(args);
-  options = await getVariableValues(options);
-  deleteFolder(local);
-  await gitFlow();
-  await filesFlow(options);
-  await initializeProject();
-  deleteFolder(local);
-  console.log(chalk.bold('Project ready %s'), chalk.green.bold('DONE'));
-}
+
+  if (!checkDeps(options)) {
+    return;
+  }
+  switch (options.command) {
+    case COMMANDS.CREATE_EXT_APP:
+      console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
+      createExtensionApp(options);
+      break;
+    case COMMANDS.CREATE_BOT:
+      console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
+      createBot(options);
+      break;
+    case COMMANDS.CREATE_CERTIFICATE:
+      console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
+      generateKeys(options);
+      break;
+      case COMMANDS.CHECK_DEPS:
+      console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
+      checkDeps(options);
+      break;
+    default:
+      options.program.outputHelp();
+      break;
+  }
+};
+
+module.exports =  init;
