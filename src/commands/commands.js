@@ -2,6 +2,7 @@ export const COMMANDS = {
   CREATE_EXT_APP: 0,
   CREATE_BOT: 1,
   CREATE_CERTIFICATE: 2,
+  CHECK_DEPS: 3,
 }
 
 const commander = require('commander');
@@ -12,7 +13,8 @@ program.version('0.0.1');
 program
   .option('--create-extension-app','createExtensionApp', false)
   .option('--create-bot', 'createBot', false)
-  .option('--generate-certificates', 'generateCertificates', false);
+  .option('--generate-certificates', 'generateCertificates', false)
+  .option('--check-deps', 'checkDeps', false);
 
 var commands;
 
@@ -23,7 +25,9 @@ const getCommand = (options) => {
       ? COMMANDS.CREATE_BOT
       : options.generateCertificates
         ? COMMANDS.CREATE_CERTIFICATE
-        : -1;
+        : options.checkDeps
+          ? COMMANDS.CHECK_DEPS
+          : -1;
 };
 
 const parseResponse = (args) => {

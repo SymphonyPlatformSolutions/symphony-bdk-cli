@@ -38,7 +38,9 @@
     "pkg-install": "^1.0.0"
   },
   "devDependencies": {
+    "command-exists": "^1.2.8",
     "njwt": "^1.0.0",
-    "terminal-image": "^0.2.0"
+    "terminal-image": "^0.2.0",
+    "terminal-link": "^2.0.0"
   }
 }
