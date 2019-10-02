@@ -9,17 +9,22 @@ const terminalImage = require('terminal-image');
 
 const init = async (args) => {
   let options = getCommands(args);
+
+  if (!checkDeps(options)) {
+    return;
+  }
   switch (options.command) {
     case COMMANDS.CREATE_EXT_APP:
       console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
-      checkDeps() && createExtensionApp(options);
+      createExtensionApp(options);
       break;
     case COMMANDS.CREATE_BOT:
-      checkDeps() && createBot(options);
+      console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
+      createBot(options);
       break;
     case COMMANDS.CREATE_CERTIFICATE:
       console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
-      checkDeps() && generateKeys(options);
+      generateKeys(options);
       break;
       case COMMANDS.CHECK_DEPS:
       console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));

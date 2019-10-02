@@ -42,7 +42,7 @@ export var readFileSync = function (filePath) {
 };
 
 export var deleteFolder = (path) => {
-  spinnerStart(chalk.bold('Deleting temp folders'));
+  spinnerStart(chalk.bold('Checking local requirements'));
   deleteFolderRecursive(path);
-  spinnerStop(chalk.bold('Folder ') + chalk.green.bold('DELETED'));
+  spinnerStop(chalk.bold('Filesystem ') + chalk.green.bold('cleaned'));
 }

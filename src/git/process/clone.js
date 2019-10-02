@@ -4,12 +4,11 @@ import {local} from "../../../utils/constants";
 import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
 
 const os = require('os');
-var nodegit = require('nodegit'),
-  path = require('path');
+const nodegit = require('nodegit');
+const path = require('path');
 
-const url = "git@github.com:SymphonyPlatformSolutions/sms-dev-fe-template-app.git",
-  userName = "git",
-  certPath = `${os.homedir()}/.ssh/`;
+const userName = "git";
+const certPath = `${os.homedir()}/.ssh/`;
 
 var pubPath = path.join(certPath, 'id_rsa.pub');
 var privPath = path.join(certPath, 'id_rsa');
@@ -30,11 +29,10 @@ var cloneOpts = {
   }
 };
 
-export async function getTemplateProject() {
-  // Clone a given repository into the `./tmp` folder.
-  spinnerStart(chalk.bold('Getting template app'));
-  return await nodegit.Clone(url, local, cloneOpts).then(function (repo) {
-    spinnerStop(chalk.bold('Template ') + chalk.green.bold("CLONED"));
+export async function getTemplateProject(repoUrl) {
+  spinnerStart(chalk.bold('Getting latest boilerplate application'));
+  return await nodegit.Clone(repoUrl, local, cloneOpts).then(function (repo) {
+    spinnerStop(chalk.bold('Boilerplate ') + chalk.green.bold("accessed"));
   }).catch(function (err) {
     spinnerError(err);
   });
