@@ -9,7 +9,7 @@ import {botFilesFlow} from "../files/files";
 import fs from 'fs';
 
 const repoUrl = "git@github.com:SymphonyPlatformSolutions/sms-sdk-botler.git";
-const repoBranch = 'refs/remotes/origin/songwriter-java11';
+const repoBranch = 'refs/remotes/origin/songwriter';
 
 const createBot = async (options) => {
   console.log(chalk.bold('Setting up a new Bot application'));
