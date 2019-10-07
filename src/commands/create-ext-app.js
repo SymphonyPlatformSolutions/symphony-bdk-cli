@@ -9,7 +9,7 @@ import fs from 'fs';
 const execSync = require('child_process').execSync;
 
 const repoUrl = "git@github.com:SymphonyPlatformSolutions/sms-dev-fe-template-app.git";
-const repoBranch = 'remotes/origin/develop';
+const repoBranch = 'remotes/origin/feature/MS-1149-app-sample';
 
 const createExtensionApp = async (options) => {
   console.log(chalk.bold(

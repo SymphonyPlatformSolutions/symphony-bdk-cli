@@ -9,6 +9,7 @@ export async function initializeExtensionApp() {
       title: chalk.bold('Installing dependencies'),
       task: () =>
         projectInstall({
+          prefer: 'yarn',
           cwd: process.cwd(),
         }),
     },
