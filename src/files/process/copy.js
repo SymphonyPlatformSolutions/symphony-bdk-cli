@@ -5,8 +5,28 @@ import { promisify } from 'util';
 import {repoPath} from "../../../utils/constants";
 import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
 import {copyFiles, deleteFolderRecursive, deleteFileSync} from "../utils";
+import { parseString, Builder } from 'xml2js';
 
 const access = promisify(fs.access);
+
+const getXml = async (file) => new Promise((resolve, reject) =>{
+  parseString(file, (err, result) => {
+
+    if(err) {
+      return reject(err)
+    }
+
+    return resolve(result);
+  })
+});
+
+const writeXml = async (jsonData, xmlPath) => new Promise((resolve) => {
+  const builder = new Builder();
+  debugger;
+  const xml = builder.buildObject(jsonData);
+  fs.writeFileSync(xmlPath, xml);
+  resolve();
+});
 
 export async function createExtensionApp(options) {
   spinnerStart(chalk.bold('Moving bits and bytes'));
@@ -50,6 +70,34 @@ export async function createBotApp(options) {
   }
 
   await copyFiles(options.templateDirectory, options.targetDirectory);
+  const pomFilePath = `${options.targetDirectory}/pom.xml`;
+  const botConfigPath = `${options.targetDirectory}/src/main/resources/bot-config.json`;
+  try {
+    const pomXml = fs.readFileSync(pomFilePath);
+    const parsedData = await getXml(pomXml);
+    parsedData.project.groupId[0] = options.basePackage;
+    parsedData.project.artifactId[0] = options.botName;
+    await writeXml(parsedData, pomFilePath);
+  }catch (e) {
+    throw new Error(`Error while processing ${pomFilePath}, with the following error: ${e}`);
+  }
+
+  try {
+    const configBotBits = fs.readFileSync(botConfigPath);
+    const configBot = JSON.parse(configBotBits);
+    configBot.botUsername = options.botUsername;
+    configBot.botPrivateKeyName = `${options.botId}_privatekey.pkcs8`;
+    configBot.botEmailAddress = options.botServiceEmail;
+    if (options.applicationId && options.applicationId.length > 0) {
+      configBot.appId = options.applicationId;
+      configBot.appPrivateKeyName = `${options.botId}_privatekey.pkcs8`;
+    }
+    const mangledConfig = JSON.stringify(configBot);
+    fs.writeFileSync(botConfigPath, mangledConfig);
+  }catch (e) {
+    throw new Error(`Error while processing ${botConfigPath}, with the following error: ${e}`);
+  }
+
   deleteFolderRecursive(`${options.targetDirectory}/.git`);
   deleteFileSync(`${options.targetDirectory}/.gitignore`);
   spinnerStop(chalk.bold('Boilerplate ') + chalk.green.bold('Installed'));
