@@ -1,7 +1,6 @@
 import inquirer from "inquirer";
 const chalk = require('chalk');
-
-const notEmpty = (value) => value && value.length > 0;
+import { notEmpty } from "../../utils/helper";
 
 async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the question bellow'));
