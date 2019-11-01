@@ -4,6 +4,7 @@ import createBot from "./commands/create-bot";
 import generateKeys from "./commands/generate-keys";
 import checkDeps from "./commands/check-deps";
 import path from 'path';
+import launchToolbox from "./commands/launch-toolbox";
 
 const terminalImage = require('terminal-image');
 
@@ -29,6 +30,11 @@ const init = async (args) => {
       case COMMANDS.CHECK_DEPS:
       console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
       checkDeps(options);
+      break;
+    case COMMANDS.TOOLBOX:
+      console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
+      checkDeps(options);
+      launchToolbox();
       break;
     default:
       options.program.outputHelp();
