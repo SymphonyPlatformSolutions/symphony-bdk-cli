@@ -55,11 +55,12 @@ If they're not present you'll be prompted with error messages.
 
 ## Commands
 
-At this time the CLI has 5 commands, the only mandatory field on these commands
+At this time the CLI has 6 commands, the only mandatory field on these commands
 if required is the project name. these commands being:
 
 * ```sms-sdk-cli --ext``` which creates an extension app (React)
 * ```sms-sdk-cli --bot``` which creates an bot app (Java)
+* ```sms-sdk-cli --toolbox``` which launches the Market Solutions Component Library in your browser
 * ```--run``` this is a command to be appended with the above e.g: ```sms-sdk-cli --ext --run```,
 if present it will not only have it bootstraped but also start it for you.
 * ```sms-sdk-cli --check-deps``` An utility command, that checks all the required dependencies for you.
