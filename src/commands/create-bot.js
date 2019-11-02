@@ -1,3 +1,5 @@
+import {generateBotKeys} from "./generate-keys";
+
 const execSync = require('child_process').execSync;
 import chalk from "chalk";
 import { getAnwsers } from "../questions/create-bot";
@@ -20,12 +22,18 @@ const createBot = async (options) => {
   deleteFolder(local);
   await gitFlow(repoUrl, repoBranch);
   await botFilesFlow(awnsers);
+  const pubKey = await generateBotKeys(targetFolder, awnsers.botServiceEmail, awnsers.botId);
   await initializeBotApp();
   deleteFolder(local);
   console.log(chalk.bold('Project ready %s'), chalk.green.bold('DONE'));
+  console.log(chalk.bold('********************************************************************************************'));
+  console.log(chalk.bold('Here follows your public key, it needs to be added to the POD your bot is going to run at'));
+  console.log(chalk.bold('please visit: https://developers.symphony.com/symphony-developer/docs/create-a-bot-user to learn more.'));
+  console.log(chalk.bold('********************************************************************************************'));
+  console.log(pubKey);
   if(options.run) {
     console.log(chalk.rgb('#00FF00').bold(
-      'This template will guide you through the process to create an bot boilerplate'
+      'Starting the bot application'
     ));
     execSync('mvn spring-boot:run',{stdio: 'inherit'});
   }

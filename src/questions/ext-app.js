@@ -1,5 +1,6 @@
 import inquirer from "inquirer";
 const chalk = require('chalk');
+import { notEmpty } from "../../utils/helper";
 
 async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the question bellow'));
@@ -7,39 +8,34 @@ async function promptForMissingOptions(options) {
   if (!options.projectName) {
     questions.push({
       name: 'projectName',
-      message: 'What\'s the project name?',
+      message: 'What\'s the project name(required)?',
+      validate: notEmpty,
       default: null,
     });
   }
 
-  if (!options.description) {
+  if (!options.appId) {
+    questions.push({
+      name: 'appId',
+      message: 'What\'s the app Id(required)?',
+      validate: notEmpty,
+      default: null,
+    });
+  }
+
+  if (!options.publisher) {
+    questions.push({
+      name: 'publisher',
+      message: 'What\'s your company name?(required)?',
+      validate: notEmpty,
+      default: null,
+    });
+  }
+
+    if (!options.description) {
     questions.push({
       name: 'description',
-      message: 'What\'s the project description?',
-      default: null,
-    });
-  }
-
-  if (!options.githubUrl) {
-    questions.push({
-      name: 'githubUrl',
-      message: 'What\'s the github project url?',
-      default: null,
-    });
-  }
-
-  if (!options.issueUrl) {
-    questions.push({
-      name: 'issueUrl',
-      message: 'What\'s the issue project url?',
-      default: null,
-    });
-  }
-
-  if (!options.author) {
-    questions.push({
-      name: 'author',
-      message: 'What\'s the author name?',
+      message: 'Please give a brief description of this extension app',
       default: null,
     });
   }
@@ -48,10 +44,9 @@ async function promptForMissingOptions(options) {
   return {
     ...options,
     projectName: options.projectName || answers.projectName,
+    appId: options.appId || answers.appId,
+    publisher: options.publisher || answers.publisher,
     description: options.description || answers.description,
-    githubUrl: options.githubUrl || answers.githubUrl,
-    issueUrl: options.issueUrl || answers.issueUrl,
-    author: options.author || answers.author,
   };
 }
 
