@@ -55,7 +55,7 @@ export const writeConfigFile = (options) => {
     bundleConfig.applications[0].id = options.appId;
     bundleConfig.applications[0].name = options.projectName;
     bundleConfig.applications[0].publisher = options.publisher;
-    const mangledConfig = JSON.stringify(bundleConfig);
+    const mangledConfig = JSON.stringify(bundleConfig, null, 2);
     fs.writeFileSync(bundlePath, mangledConfig);
   }catch (e) {
     throw new Error(`Error while processing ${botConfigPath}, with the following error: ${e}`);

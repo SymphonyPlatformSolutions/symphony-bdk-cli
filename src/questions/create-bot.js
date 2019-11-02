@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 const chalk = require('chalk');
-import { notEmpty } from "../../utils/helper";
+import { notEmpty, validJavaPackage } from "../../utils/helper";
 
 async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the question bellow'));
@@ -9,7 +9,7 @@ async function promptForMissingOptions(options) {
   if (!options.botName) {
     questions.push({
       name: 'botName',
-      message: 'What\'s the bot name? (required)',
+      message: 'What\'s the bot project name? (required)',
       validate: notEmpty,
       default: null,
     });
@@ -39,7 +39,7 @@ async function promptForMissingOptions(options) {
     questions.push({
       name: 'basePackage',
       message: 'What\'s the Base Package? (required)',
-      validate: notEmpty,
+      validate: validJavaPackage,
       default: 'com.symphony.ms',
     });
   }

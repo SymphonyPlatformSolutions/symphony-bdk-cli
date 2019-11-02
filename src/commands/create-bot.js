@@ -28,7 +28,7 @@ const createBot = async (options) => {
   console.log(chalk.bold('Project ready %s'), chalk.green.bold('DONE'));
   console.log(chalk.bold('********************************************************************************************'));
   console.log(chalk.bold('Here follows your public key, it needs to be added to the POD your bot is going to run at'));
-  console.log(chalk.bold('please visit: https://developers.symphony.com/symphony-developer/docs/ to learn more.'));
+  console.log(chalk.bold('please visit: https://developers.symphony.com/symphony-developer/docs/create-a-bot-user to learn more.'));
   console.log(chalk.bold('********************************************************************************************'));
   console.log(pubKey);
   if(options.run) {

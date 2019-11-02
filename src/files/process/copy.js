@@ -6,8 +6,34 @@ import {repoPath} from "../../../utils/constants";
 import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
 import {copyFiles, deleteFolderRecursive, deleteFileSync} from "../utils";
 import { parseString, Builder } from 'xml2js';
+import ReplaceInFiles from 'replace-in-files';
+import glob from 'glob';
 
 const access = promisify(fs.access);
+
+const getDirectories = (src, callback) => new Promise((resolve) => glob(`${src}/**/*`,(error, list) => {
+  resolve(list);
+}));
+
+const basePackage = ['com','symphony','ms','songwriter'];
+
+const processPackageNames = (options, srcFiles, testFiles) => {
+  const packageList = options.basePackage.split('.');
+  packageList.push(options.botId);
+
+  for (let i = packageList.length; i > 0 ; i--) {
+    const targetPackages = basePackage.slice(0,i).join('/');
+    let newPackages = basePackage.slice(0,i-1);
+    newPackages.push(packageList[i-1]);
+    newPackages = newPackages.join('/');
+    const workPathSrc = `${srcFiles}/${targetPackages}`;
+    const newPathSrc = `${srcFiles}/${newPackages}`;
+    const workPathTests = `${testFiles}/${targetPackages}`;
+    const newPathTests = `${testFiles}/${newPackages}`;
+    fs.renameSync(workPathSrc, newPathSrc);
+    fs.renameSync(workPathTests, newPathTests);
+  }
+};
 
 const getXml = async (file) => new Promise((resolve, reject) =>{
   parseString(file, (err, result) => {
@@ -62,6 +88,9 @@ export async function createBotApp(options) {
   const templateDir = path.resolve(repoPath);
   options.templateDirectory = templateDir;
 
+  const botJavaFilesPath = `${options.targetDirectory}/src/main/java`;
+  const botJavaTestsPath = `${options.targetDirectory}/src/test/java`;
+
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
@@ -70,8 +99,20 @@ export async function createBotApp(options) {
   }
 
   await copyFiles(options.templateDirectory, options.targetDirectory);
+
+  processPackageNames(options, botJavaFilesPath, botJavaTestsPath);
+  const list = await getDirectories(`${options.targetDirectory}/src`);
+  const renamePackageOptions = {
+    files: list,
+    from: /com.symphony.ms.songwriter/g,
+    to: `${options.basePackage}.${options.botId}`,
+  };
+
+  await ReplaceInFiles(renamePackageOptions);
+
   const pomFilePath = `${options.targetDirectory}/pom.xml`;
   const botConfigPath = `${options.targetDirectory}/src/main/resources/bot-config.json`;
+
   try {
     const pomXml = fs.readFileSync(pomFilePath);
     const parsedData = await getXml(pomXml);
@@ -92,7 +133,7 @@ export async function createBotApp(options) {
       configBot.appId = options.applicationId;
       configBot.appPrivateKeyName = `${options.botId}_privatekey.pkcs8`;
     }
-    const mangledConfig = JSON.stringify(configBot);
+    const mangledConfig = JSON.stringify(configBot, null, 2);
     fs.writeFileSync(botConfigPath, mangledConfig);
   }catch (e) {
     throw new Error(`Error while processing ${botConfigPath}, with the following error: ${e}`);
