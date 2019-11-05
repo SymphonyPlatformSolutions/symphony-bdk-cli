@@ -16,13 +16,13 @@ const repoBranch = 'refs/remotes/origin/songwriter';
 const createBot = async (options) => {
   console.log(chalk.bold('Setting up a new Bot application'));
   const awnsers = await getAnwsers(options);
-  const targetFolder = `${options.cwd}/${awnsers.botName}`;
+  const targetFolder = `${options.cwd}/${awnsers.projectName}`;
   fs.existsSync(targetFolder) || fs.mkdirSync(targetFolder);
   process.chdir(targetFolder);
   deleteFolder(local);
   await gitFlow(repoUrl, repoBranch);
   await botFilesFlow(awnsers);
-  const pubKey = await generateBotKeys(targetFolder, awnsers.botServiceEmail, awnsers.botId);
+  const pubKey = await generateBotKeys(targetFolder, awnsers.botServiceEmail, awnsers.projectName.toLowerCase());
   await initializeBotApp();
   deleteFolder(local);
   console.log(chalk.bold('Project ready %s'), chalk.green.bold('DONE'));

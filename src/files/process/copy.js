@@ -20,7 +20,7 @@ const basePackage = ['com','symphony','ms','songwriter'];
 
 const processPackageNames = (options, srcFiles, testFiles) => {
   const packageList = options.basePackage.split('.');
-  packageList.push(options.botName.toLowerCase());
+  packageList.push(options.projectName.toLowerCase());
 
   for (let i = packageList.length; i > 0 ; i--) {
     const targetPackages = basePackage.slice(0,i).join('/');
@@ -105,7 +105,7 @@ export async function createBotApp(options) {
   const renamePackageOptions = {
     files: list,
     from: /com.symphony.ms.songwriter/g,
-    to: `${options.basePackage}.${options.botName.toLowerCase()}`,
+    to: `${options.basePackage}.${options.projectName.toLowerCase()}`,
   };
 
   await ReplaceInFiles(renamePackageOptions);
@@ -118,7 +118,7 @@ export async function createBotApp(options) {
     const pomXml = fs.readFileSync(pomFilePath);
     const parsedData = await getXml(pomXml);
     parsedData.project.groupId[0] = options.basePackage;
-    parsedData.project.artifactId[0] = options.botName;
+    parsedData.project.artifactId[0] = options.projectName;
     await writeXml(parsedData, pomFilePath);
   }catch (e) {
     throw new Error(`Error while processing ${pomFilePath}, with the following error: ${e}`);
@@ -128,16 +128,15 @@ export async function createBotApp(options) {
     const configBotBits = fs.readFileSync(botConfigPath);
     const configBot = JSON.parse(configBotBits);
     configBot.botUsername = options.botUsername;
-    configBot.botPrivateKeyName = `${options.botId}_privatekey.pkcs8`;
+    configBot.botPrivateKeyName = `${options.projectName}_privatekey.pkcs8`;
+    configBot.appPrivateKeyName = `${options.projectName}_privatekey.pkcs8`;
+    configBot.appId = options.applicationId;
     configBot.botEmailAddress = options.botServiceEmail;
     configBot.sessionAuthHost = options.podAddress;
     configBot.keyAuthHost = options.podAddress;
     configBot.podHost = options.podAddress;
     configBot.agentHost = options.podAddress;
-    if (options.applicationId && options.applicationId.length > 0) {
-      configBot.appId = options.applicationId;
-      configBot.appPrivateKeyName = `${options.botId}_privatekey.pkcs8`;
-    }
+
     const mangledConfig = JSON.stringify(configBot, null, 2);
     fs.writeFileSync(botConfigPath, mangledConfig);
   }catch (e) {
@@ -146,9 +145,9 @@ export async function createBotApp(options) {
 
     try {
     const appYaml = YAML.load(applicationYamlPath);
-    appYaml.server.servlet['display-name'] = options.botName.toLowerCase();
-    appYaml.server.servlet['context-path'] = `/${options.botName.toLowerCase()}`;
-    appYaml.logging.file = `\$\{resources\}/logs/${options.botName.toLowerCase()}.log`;
+    appYaml.server.servlet['display-name'] = options.projectName.toLowerCase();
+    appYaml.server.servlet['context-path'] = `/${options.projectName.toLowerCase()}`;
+    appYaml.logging.file = `\$\{resources\}/logs/${options.projectName.toLowerCase()}.log`;
     const yamlString = YAML.stringify(appYaml,5);
     fs.writeFileSync(applicationYamlPath, yamlString, 'utf-8');
 
@@ -161,5 +160,4 @@ export async function createBotApp(options) {
   deleteFileSync(`${options.targetDirectory}/.gitignore`);
   spinnerStop(chalk.bold('Boilerplate ') + chalk.green.bold('Installed'));
   return true;
-
 }

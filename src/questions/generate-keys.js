@@ -5,9 +5,9 @@ async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the question bellow'));
   const questions = [];
 
-  if (!options.botId) {
+  if (!options.projectName) {
     questions.push({
-      name: 'botId',
+      name: 'projectName',
       message: 'What\'s the project bot-id?',
       default: null,
     });
@@ -24,7 +24,7 @@ async function promptForMissingOptions(options) {
   const answers = await inquirer.prompt(questions);
   return {
     ...options,
-    botId: options.botI || answers.botId,
+    projectName: options.botI || answers.projectName,
     botEmailAddress: options.botEmailAddress || answers.botEmailAddress,
   };
 }
