@@ -8,6 +8,7 @@ import {copyFiles, deleteFolderRecursive, deleteFileSync} from "../utils";
 import { parseString, Builder } from 'xml2js';
 import ReplaceInFiles from 'replace-in-files';
 import glob from 'glob';
+import YAML from 'yamljs';
 
 const access = promisify(fs.access);
 
@@ -19,7 +20,7 @@ const basePackage = ['com','symphony','ms','songwriter'];
 
 const processPackageNames = (options, srcFiles, testFiles) => {
   const packageList = options.basePackage.split('.');
-  packageList.push(options.botId);
+  packageList.push(options.botName.toLowerCase());
 
   for (let i = packageList.length; i > 0 ; i--) {
     const targetPackages = basePackage.slice(0,i).join('/');
@@ -48,7 +49,6 @@ const getXml = async (file) => new Promise((resolve, reject) =>{
 
 const writeXml = async (jsonData, xmlPath) => new Promise((resolve) => {
   const builder = new Builder();
-  debugger;
   const xml = builder.buildObject(jsonData);
   fs.writeFileSync(xmlPath, xml);
   resolve();
@@ -105,13 +105,14 @@ export async function createBotApp(options) {
   const renamePackageOptions = {
     files: list,
     from: /com.symphony.ms.songwriter/g,
-    to: `${options.basePackage}.${options.botId}`,
+    to: `${options.basePackage}.${options.botName.toLowerCase()}`,
   };
 
   await ReplaceInFiles(renamePackageOptions);
 
   const pomFilePath = `${options.targetDirectory}/pom.xml`;
   const botConfigPath = `${options.targetDirectory}/src/main/resources/bot-config.json`;
+  const applicationYamlPath = `${options.targetDirectory}/src/main/resources/application-dev.yaml`;
 
   try {
     const pomXml = fs.readFileSync(pomFilePath);
@@ -129,6 +130,10 @@ export async function createBotApp(options) {
     configBot.botUsername = options.botUsername;
     configBot.botPrivateKeyName = `${options.botId}_privatekey.pkcs8`;
     configBot.botEmailAddress = options.botServiceEmail;
+    configBot.sessionAuthHost = options.podAddress;
+    configBot.keyAuthHost = options.podAddress;
+    configBot.podHost = options.podAddress;
+    configBot.agentHost = options.podAddress;
     if (options.applicationId && options.applicationId.length > 0) {
       configBot.appId = options.applicationId;
       configBot.appPrivateKeyName = `${options.botId}_privatekey.pkcs8`;
@@ -139,7 +144,20 @@ export async function createBotApp(options) {
     throw new Error(`Error while processing ${botConfigPath}, with the following error: ${e}`);
   }
 
+    try {
+    const appYaml = YAML.load(applicationYamlPath);
+    appYaml.server.servlet['display-name'] = options.botName.toLowerCase();
+    appYaml.server.servlet['context-path'] = `/${options.botName.toLowerCase()}`;
+    appYaml.logging.file = `\$\{resources\}/logs/${options.botName.toLowerCase()}.log`;
+    const yamlString = YAML.stringify(appYaml,5);
+    fs.writeFileSync(applicationYamlPath, yamlString, 'utf-8');
+
+  }catch (e) {
+    throw new Error(`Error while processing ${applicationYamlPath}, with the following error: ${e}`);
+  }
+
   deleteFolderRecursive(`${options.targetDirectory}/.git`);
+  deleteFolderRecursive(`${options.targetDirectory}/.tmp`);
   deleteFileSync(`${options.targetDirectory}/.gitignore`);
   spinnerStop(chalk.bold('Boilerplate ') + chalk.green.bold('Installed'));
   return true;

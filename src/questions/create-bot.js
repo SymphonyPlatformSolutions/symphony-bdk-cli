@@ -25,6 +25,15 @@ async function promptForMissingOptions(options) {
     });
   }
 
+    if (!options.botUsername) {
+    questions.push({
+      name: 'botUsername',
+      message: 'What\'s the bot username? (required)',
+      validate: notEmpty,
+      default: null,
+    });
+  }
+
   if (!options.botServiceEmail) {
     questions.push({
       name: 'botServiceEmail',
@@ -32,7 +41,6 @@ async function promptForMissingOptions(options) {
       validate: notEmpty,
       default: null,
     });
-
   }
 
   if (!options.basePackage) {
@@ -44,20 +52,19 @@ async function promptForMissingOptions(options) {
     });
   }
 
-  if (!options.botUsername) {
-    questions.push({
-      name: 'botUsername',
-      message: 'What\'s the bot username in symphony portal? (required)',
-      validate: notEmpty,
-      default: null,
-    });
-  }
-
   if (!options.applicationId) {
     questions.push({
       name: 'applicationId',
       message: 'do you have an extension app?, if so what is the application ID in Symphony portal?',
       default: null,
+    });
+  }
+
+   if (!options.podAddress) {
+    questions.push({
+      name: 'podAddress',
+      message: 'Please Provide the Pod Address this bot will serve',
+      default: 'psdev.symphony.com',
     });
   }
   const answers = await inquirer.prompt(questions);
@@ -69,6 +76,7 @@ async function promptForMissingOptions(options) {
     basePackage: options.basePackage || answers.basePackage,
     botUsername: options.botUsername || answers.botUsername,
     applicationId: options.applicationId || answers.applicationId,
+    podAddress: options.podAddress || answers.podAddress,
   };
 }
 
