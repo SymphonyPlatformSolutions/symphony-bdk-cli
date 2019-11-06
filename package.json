@@ -38,12 +38,13 @@
     "ora": "^3.4.0",
     "pkg-install": "^1.0.0",
     "replace-in-files": "^2.0.3",
-    "xml2js": "^0.4.22"
+    "xml2js": "^0.4.22",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "command-exists": "^1.2.8",
     "njwt": "^1.0.0",
-    "terminal-image": "^0.2.0",
+    "terminal-image-resizeable": "https://github.com/nao20010128nao/terminal-image.git",
     "terminal-link": "^2.0.0"
   }
 }

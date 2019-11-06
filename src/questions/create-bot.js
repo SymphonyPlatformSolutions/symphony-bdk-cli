@@ -6,20 +6,19 @@ async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the question bellow'));
   const questions = [];
 
-  if (!options.botName) {
+  if (!options.projectName) {
     questions.push({
-      name: 'botName',
+      name: 'projectName',
       message: 'What\'s the bot project name? (required)',
       validate: notEmpty,
       default: null,
     });
   }
 
-  if (!options.botId) {
+  if (!options.botUsername) {
     questions.push({
-      name: 'botId',
-      required: true,
-      message: 'What\'s the project bot-id? (required)',
+      name: 'botUsername',
+      message: 'What\'s the bot username? (required)',
       validate: notEmpty,
       default: null,
     });
@@ -32,7 +31,6 @@ async function promptForMissingOptions(options) {
       validate: notEmpty,
       default: null,
     });
-
   }
 
   if (!options.basePackage) {
@@ -44,31 +42,30 @@ async function promptForMissingOptions(options) {
     });
   }
 
-  if (!options.botUsername) {
-    questions.push({
-      name: 'botUsername',
-      message: 'What\'s the bot username in symphony portal? (required)',
-      validate: notEmpty,
-      default: null,
-    });
-  }
-
   if (!options.applicationId) {
     questions.push({
       name: 'applicationId',
       message: 'do you have an extension app?, if so what is the application ID in Symphony portal?',
-      default: null,
+      default: '',
+    });
+  }
+
+   if (!options.podAddress) {
+    questions.push({
+      name: 'podAddress',
+      message: 'Please Provide the Pod Address this bot will serve',
+      default: 'psdev.symphony.com',
     });
   }
   const answers = await inquirer.prompt(questions);
   return {
     ...options,
-    botName: options.botName || answers.botName,
-    botId: options.botId || answers.botId,
+    projectName: options.projectName || answers.projectName,
     botServiceEmail: options.botServiceEmail || answers.botServiceEmail,
     basePackage: options.basePackage || answers.basePackage,
     botUsername: options.botUsername || answers.botUsername,
     applicationId: options.applicationId || answers.applicationId,
+    podAddress: options.podAddress || answers.podAddress,
   };
 }
 
