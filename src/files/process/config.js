@@ -34,7 +34,7 @@ const getConfigString = (options) => {
         writable: false,
       },
       APP_ICON_NAME: {
-        value: 'favicon.svg',
+        value: 'favicon.png',
         writable: false,
       },
     });
