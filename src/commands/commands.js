@@ -4,7 +4,12 @@ export const COMMANDS = {
   CREATE_CERTIFICATE: 2,
   CHECK_DEPS: 3,
   TOOLBOX: 4,
-}
+  CREATE_APP_NOTIFICATION: 5,
+};
+
+export const EXT_APP_COMMANDS = {
+  NOTIFICATION: 'notification',
+};
 
 const commander = require('commander');
 const program = new commander.Command();
@@ -14,7 +19,7 @@ program.version('0.0.1')
 program
   .description('This tool helps to generate the proper RSA files to be used on symphony \n' +
     'and also, helps the fast creation of bots and extension apps')
-  .option('--app','Creates an extension app boilerplate', false)
+  .option('--app [action]','Creates an extension app boilerplate, add "notification" as an argument, to add a new notification', false)
   .option('--bot', 'Creates an Symphony bot application', false)
   .option('--toolbox', 'Launches the Market Soltuons toolbox-ui library on http://localhost:6006', false)
   .option('--run', 'To be used along side --app or --bot, it starts the project', false)
@@ -24,22 +29,24 @@ program
 var commands;
 
 const getCommand = (options) => {
-  return options.toolbox ? COMMANDS.TOOLBOX :
-      options.app
-    ? COMMANDS.CREATE_EXT_APP
-    : options.bot
-      ? COMMANDS.CREATE_BOT
-      : options.genCerts
-        ? COMMANDS.CREATE_CERTIFICATE
-        : options.checkDeps
-          ? COMMANDS.CHECK_DEPS
-          : -1;
+  return options.toolbox
+      ? COMMANDS.TOOLBOX
+      : options.app
+          ? COMMANDS.CREATE_EXT_APP
+          : options.bot
+              ? COMMANDS.CREATE_BOT
+              : options.genCerts
+                  ? COMMANDS.CREATE_CERTIFICATE
+                  : options.checkDeps
+                      ? COMMANDS.CHECK_DEPS
+                      : -1;
 };
 
 const parseResponse = (args) => {
   let options = program.parse(args);
   commands = {
     ...commands,
+    app: options.app,
     command: getCommand(options),
     program: program,
     run: options.run,

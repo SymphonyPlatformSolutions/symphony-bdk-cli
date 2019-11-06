@@ -1,4 +1,4 @@
-import {COMMANDS, getCommands} from "./commands/commands";
+import {COMMANDS, EXT_APP_COMMANDS, getCommands} from "./commands/commands";
 import createExtensionApp from "./commands/create-ext-app";
 import createBot from "./commands/create-bot";
 import generateKeys from "./commands/generate-keys";
@@ -6,6 +6,7 @@ import checkDeps from "./commands/check-deps";
 import path from 'path';
 import launchToolbox from "./commands/launch-toolbox";
 import fs from 'fs';
+import createNotification from "./commands/create-notification";
 
 const terminalImage = require('terminal-image-resizeable');
 
@@ -19,7 +20,15 @@ const init = async (args) => {
   switch (options.command) {
     case COMMANDS.CREATE_EXT_APP:
       console.log(await terminalImage.buffer(imageBuffer, 64,30));
-      createExtensionApp(options);
+
+      if (options.app === true) {
+        createExtensionApp(options);
+      } else if(options.app === EXT_APP_COMMANDS.NOTIFICATION) {
+        createNotification(options);
+      } else {
+        options.program.outputHelp();
+      }
+
       break;
     case COMMANDS.CREATE_BOT:
       console.log(await terminalImage.buffer(imageBuffer, 64, 30));
