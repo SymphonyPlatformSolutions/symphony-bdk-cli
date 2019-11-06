@@ -4,8 +4,7 @@ import path from 'path';
 import { promisify } from 'util';
 import {repoPath} from "../../../utils/constants";
 import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
-import {copyFiles, deleteFolderRecursive, deleteFileSync} from "../utils";
-import { parseString, Builder } from 'xml2js';
+import {copyFiles, deleteFolderRecursive, deleteFileSync, getXml, writeXml} from "../utils";
 import ReplaceInFiles from 'replace-in-files';
 import glob from 'glob';
 import YAML from 'yamljs';
@@ -35,24 +34,6 @@ const processPackageNames = (options, srcFiles, testFiles) => {
     fs.renameSync(workPathTests, newPathTests);
   }
 };
-
-const getXml = async (file) => new Promise((resolve, reject) =>{
-  parseString(file, (err, result) => {
-
-    if(err) {
-      return reject(err)
-    }
-
-    return resolve(result);
-  })
-});
-
-const writeXml = async (jsonData, xmlPath) => new Promise((resolve) => {
-  const builder = new Builder();
-  const xml = builder.buildObject(jsonData);
-  fs.writeFileSync(xmlPath, xml);
-  resolve();
-});
 
 export async function createExtensionApp(options) {
   spinnerStart(chalk.bold('Moving bits and bytes'));

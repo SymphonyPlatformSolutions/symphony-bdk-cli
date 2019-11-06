@@ -1,4 +1,4 @@
-import {COMMANDS, EXT_APP_COMMANDS, getCommands} from "./commands/commands";
+import {COMMANDS, TEMPLATE_COMMANDS, getCommands} from "./commands/commands";
 import createExtensionApp from "./commands/create-ext-app";
 import createBot from "./commands/create-bot";
 import generateKeys from "./commands/generate-keys";
@@ -7,6 +7,7 @@ import path from 'path';
 import launchToolbox from "./commands/launch-toolbox";
 import fs from 'fs';
 import createNotification from "./commands/create-notification";
+import createCommandHandler from "./commands/create-command-handler";
 
 const terminalImage = require('terminal-image');
 
@@ -23,7 +24,7 @@ const init = async (args) => {
 
       if (options.app === true) {
         createExtensionApp(options);
-      } else if(options.app === EXT_APP_COMMANDS.NOTIFICATION) {
+      } else if(options.app === TEMPLATE_COMMANDS.NOTIFICATION) {
         createNotification(options);
       } else {
         options.program.outputHelp();
@@ -31,7 +32,13 @@ const init = async (args) => {
 
       break;
     case COMMANDS.CREATE_BOT:
-      createBot(options);
+      if (options.bot === true) {
+        createBot(options);
+      } else if(options.bot === TEMPLATE_COMMANDS.HANDLER) {
+        createCommandHandler(options);
+      } else {
+        options.program.outputHelp();
+      }
       break;
     case COMMANDS.CREATE_CERTIFICATE:
       generateKeys(options);

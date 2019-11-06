@@ -2,6 +2,7 @@ import chalk from "chalk";
 import {spinnerStart, spinnerStop} from "../../utils/spinner";
 import {promisify} from "util";
 import ncp from 'ncp';
+import { parseString, Builder } from 'xml2js';
 
 var fs = require('fs');
 const copy = promisify(ncp);
@@ -46,3 +47,21 @@ export var deleteFolder = (path) => {
   deleteFolderRecursive(path);
   spinnerStop(chalk.bold('Filesystem ') + chalk.green.bold('cleaned'));
 }
+
+export const getXml = async (file) => new Promise((resolve, reject) =>{
+  parseString(file, (err, result) => {
+
+    if(err) {
+      return reject(err)
+    }
+
+    return resolve(result);
+  })
+});
+
+export const writeXml = async (jsonData, xmlPath) => new Promise((resolve) => {
+  const builder = new Builder();
+  const xml = builder.buildObject(jsonData);
+  fs.writeFileSync(xmlPath, xml);
+  resolve();
+});

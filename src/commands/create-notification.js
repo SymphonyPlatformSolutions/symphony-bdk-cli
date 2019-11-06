@@ -44,7 +44,7 @@ const getFiles = (extAppPath) => {
 
 const createNotification = async (options) => {
   console.log(chalk.bold(
-    'This template will guide you through the process of adding a new notification'
+    'This tool will guide you through the process of adding a new notification'
   ));
   const awnsers = await getAnwsers(options);
 

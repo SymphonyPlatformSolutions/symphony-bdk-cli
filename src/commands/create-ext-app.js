@@ -26,7 +26,7 @@ const createExtensionApp = async (options) => {
   deleteFolder(local);
   console.log(chalk.bold('Project ready %s'), chalk.green.bold('DONE'));
   if(options.run) {
-    console.log(chalk.rgb('#00FF00').bold('This template will guide you through the process to create an extension app template'));
+    console.log(chalk.rgb('#00FF00').bold('This tool will guide you through the process to create an extension app template'));
     execSync('yarn start:mock',{stdio: 'inherit'});
   }
 };
