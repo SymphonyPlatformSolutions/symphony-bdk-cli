@@ -8,18 +8,18 @@ import launchToolbox from "./commands/launch-toolbox";
 import fs from 'fs';
 import createNotification from "./commands/create-notification";
 
-const terminalImage = require('terminal-image-resizeable');
+const terminalImage = require('terminal-image');
 
 const init = async (args) => {
   let options = getCommands(args);
   const imageBuffer = fs.readFileSync(path.resolve(__dirname,'./assets/logo-symphony.png'));
+  console.log(await terminalImage.file(path.resolve(__dirname, './assets/logo-symphony.png')));
 
   if (!checkDeps(options)) {
     return;
   }
   switch (options.command) {
     case COMMANDS.CREATE_EXT_APP:
-      console.log(await terminalImage.buffer(imageBuffer, 64,30));
 
       if (options.app === true) {
         createExtensionApp(options);
@@ -31,19 +31,15 @@ const init = async (args) => {
 
       break;
     case COMMANDS.CREATE_BOT:
-      console.log(await terminalImage.buffer(imageBuffer, 64, 30));
       createBot(options);
       break;
     case COMMANDS.CREATE_CERTIFICATE:
-      console.log(await terminalImage.buffer(imageBuffer, 64, 30));
       generateKeys(options);
       break;
       case COMMANDS.CHECK_DEPS:
-      console.log(await terminalImage.buffer(imageBuffer, 64, 30));
       checkDeps(options);
       break;
     case COMMANDS.TOOLBOX:
-      console.log(await terminalImage.buffer(imageBuffer, 64, 30));
       checkDeps(options);
       launchToolbox();
       break;

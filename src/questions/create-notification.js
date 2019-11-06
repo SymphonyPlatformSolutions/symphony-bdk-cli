@@ -18,13 +18,13 @@ export const NOTIFICATION_CUSTOM_OPTIONS = {
 };
 
 async function promptForMissingOptions(options) {
-  console.log(chalk.bold('Please answer the question bellow'));
+  console.log(chalk.bold('Please answer the following questions'));
   const questions = [];
 
   if (!options.notificationName) {
     questions.push({
       name: 'notificationName',
-      message: 'What\'s the notification name?(UPPER_CAMEL_CASE)',
+      message: 'What\'s the notification name? (UPPER_CAMEL_CASE)',
       validate: isUpperCase,
       default: '',
     });

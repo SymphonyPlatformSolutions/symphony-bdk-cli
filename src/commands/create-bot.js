@@ -27,7 +27,7 @@ const createBot = async (options) => {
   deleteFolder(local);
   console.log(chalk.bold('Project ready %s'), chalk.green.bold('DONE'));
   console.log(chalk.bold('********************************************************************************************'));
-  console.log(chalk.bold('Here follows your public key, it needs to be added to the POD your bot is going to run at'));
+  console.log(chalk.bold('Please find below the bot public key, it must be added to the bot user account'));
   console.log(chalk.bold('please visit: https://developers.symphony.com/restapi/docs/rsa-bot-authentication-workflow to learn more.'));
   console.log(chalk.bold('********************************************************************************************'));
   console.log(pubKey);

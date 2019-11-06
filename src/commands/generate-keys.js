@@ -10,7 +10,7 @@ import path from 'path';
 import {spinnerStart, spinnerStop} from "../../utils/spinner";
 
 export const generateBotKeys = (projectRoot, botEmailAddress, projectName) => {
-  spinnerStart('Generating bot development keys\n');
+  spinnerStart('Generating bot RSA keys\n');
   const certArgs = `/emailAddress=${botEmailAddress}`;
   const targetFolder = `${projectRoot}/certs`;
   fs.existsSync(targetFolder) || fs.mkdirSync(targetFolder);

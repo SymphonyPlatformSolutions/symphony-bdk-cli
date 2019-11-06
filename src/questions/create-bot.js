@@ -3,7 +3,7 @@ const chalk = require('chalk');
 import { notEmpty, validJavaPackage } from "../../utils/helper";
 
 async function promptForMissingOptions(options) {
-  console.log(chalk.bold('Please answer the question bellow'));
+  console.log(chalk.bold('Please answer the following questions'));
   const questions = [];
 
   if (!options.projectName) {
@@ -21,13 +21,13 @@ async function promptForMissingOptions(options) {
       message: 'What\'s the bot username? (required)',
       validate: notEmpty,
       default: null,
-    });
+    })
   }
 
   if (!options.botServiceEmail) {
     questions.push({
       name: 'botServiceEmail',
-      message: 'What\'s the bot service email? (required)',
+      message: 'What\'s the bot email address? (required)',
       validate: notEmpty,
       default: null,
     });
@@ -36,7 +36,7 @@ async function promptForMissingOptions(options) {
   if (!options.basePackage) {
     questions.push({
       name: 'basePackage',
-      message: 'What\'s the Base Package? (required)',
+      message: 'What\'s the base package? (required)',
       validate: validJavaPackage,
       default: 'com.symphony.ms',
     });
@@ -45,7 +45,7 @@ async function promptForMissingOptions(options) {
   if (!options.applicationId) {
     questions.push({
       name: 'applicationId',
-      message: 'do you have an extension app?, if so what is the application ID in Symphony portal?',
+      message: 'do you have an existing extension app?, if so what is the application ID declared in Symphony?',
       default: '',
     });
   }
@@ -53,7 +53,7 @@ async function promptForMissingOptions(options) {
    if (!options.podAddress) {
     questions.push({
       name: 'podAddress',
-      message: 'Please Provide the Pod Address this bot will serve',
+      message: 'Please Provide the Symphony Pod address this bot will serve',
       default: 'psdev.symphony.com',
     });
   }

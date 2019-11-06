@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 const chalk = require('chalk');
 
 async function promptForMissingOptions(options) {
-  console.log(chalk.bold('Please answer the question bellow'));
+  console.log(chalk.bold('Please answer the following questions'));
   const questions = [];
 
   if (!options.projectName) {

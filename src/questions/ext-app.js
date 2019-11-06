@@ -3,12 +3,12 @@ const chalk = require('chalk');
 import { notEmpty } from "../../utils/helper";
 
 async function promptForMissingOptions(options) {
-  console.log(chalk.bold('Please answer the question bellow'));
+  console.log(chalk.bold('Please answer the following questions'));
   const questions = [];
   if (!options.projectName) {
     questions.push({
       name: 'projectName',
-      message: 'What\'s the project name(required)?',
+      message: 'What\'s the project name? (required)',
       validate: notEmpty,
       default: null,
     });
@@ -17,7 +17,7 @@ async function promptForMissingOptions(options) {
   if (!options.appId) {
     questions.push({
       name: 'appId',
-      message: 'What\'s the app Id(required)?',
+      message: 'What\'s the app Id? (required)',
       validate: notEmpty,
       default: null,
     });
@@ -26,7 +26,7 @@ async function promptForMissingOptions(options) {
   if (!options.publisher) {
     questions.push({
       name: 'publisher',
-      message: 'What\'s your company name?(required)?',
+      message: 'What\'s your company name? (required)',
       validate: notEmpty,
       default: null,
     });

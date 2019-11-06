@@ -4,7 +4,6 @@
 
 /***************** Simple *******************/
 
-
 export const simpleTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
   ${notificationName}: {
     type: 'com.symphony.ms.${notificationName}',
@@ -26,7 +25,6 @@ export const simpleTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS
       default:`;
 
 /***************** Information *******************/
-
 
 export const informationTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
   ${notificationName}: {
@@ -51,7 +49,6 @@ export const informationTemplateEnricher = (notificationName) =>`case ENRICHER_E
       default:`;
 
 /***************** List *******************/
-
 
 export const listTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
   ${notificationName}: {
@@ -79,7 +76,6 @@ export const listTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.$
 
 /***************** Table *******************/
 
-
 export const tableTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
   ${notificationName}: {
     type: 'com.symphony.ms.${notificationName}',
@@ -106,7 +102,6 @@ export const tableTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.
 
 /***************** Alert *******************/
 
-
 export const alertTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
   ${notificationName}: {
     type: 'com.symphony.ms.${notificationName}',
@@ -128,7 +123,6 @@ export const alertTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.
       default:`;
 
 /***************** Notification *******************/
-
 
 export const notificationTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
   ${notificationName}: {

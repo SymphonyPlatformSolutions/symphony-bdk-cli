@@ -8,7 +8,7 @@ export const COMMANDS = {
 };
 
 export const EXT_APP_COMMANDS = {
-  NOTIFICATION: 'notification',
+  NOTIFICATION: 'message-template',
 };
 
 const commander = require('commander');
@@ -17,14 +17,14 @@ program.version('0.0.1')
 
 // Available Commands
 program
-  .description('This tool helps to generate the proper RSA files to be used on symphony \n' +
-    'and also, helps the fast creation of bots and extension apps')
-  .option('--app [action]','Creates an extension app boilerplate, add "notification" as an argument, to add a new notification', false)
-  .option('--bot', 'Creates an Symphony bot application', false)
-  .option('--toolbox', 'Launches the Market Soltuons toolbox-ui library on http://localhost:6006', false)
-  .option('--run', 'To be used along side --app or --bot, it starts the project', false)
+  .description('This tool helps to generate bots and extension apps as well as the proper RSA files used by a symphony \n' +
+    'bot account ')
+  .option('--app [action]','Creates an extension app boilerplate, add "message-template" as an argument, to add a new message template', false)
+  .option('--bot', 'Creates a Symphony bot application', false)
+  .option('--toolbox', 'Launches the toolbox-ui library on http://localhost:6006', false)
+  .option('--run', 'Starts the newly created project when used with --app and --bot ', false)
   .option('--gen-certs', 'Generates they RSA key pair and outputs a valid JWT token for immediate testing', false)
-  .option('--check-deps', 'Checks if the system has all the required dependencies to run this project', false);
+  .option('--check-deps', 'Checks if the system has all the required dependencies to run the project', false);
 
 var commands;
 

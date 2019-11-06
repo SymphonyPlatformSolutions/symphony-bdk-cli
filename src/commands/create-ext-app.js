@@ -13,7 +13,7 @@ const repoBranch = 'remotes/origin/develop';
 
 const createExtensionApp = async (options) => {
   console.log(chalk.bold(
-    'This template will guide you through the process to create an extension app template'
+    'This tool will guide you through the process to create an extension app template'
   ));
   const awnsers = await getAnwsers(options);
   const targetFolder = `${options.cwd}/${awnsers.projectName}`;
