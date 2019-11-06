@@ -24,7 +24,7 @@ async function promptForMissingOptions(options) {
   if (!options.notificationName) {
     questions.push({
       name: 'notificationName',
-      message: 'What\'s the notification name? (UPPER_CAMEL_CASE)',
+      message: 'What\'s the template name? (UPPER_CAMEL_CASE)',
       validate: isUpperCase,
       default: '',
     });
