@@ -10,7 +10,11 @@ async function promptForMissingOptions(options) {
     questions.push({
       name: 'commandName',
       message: 'What\'s the new Command name? ',
-      validate: (str) => notEmpty(str) && str && str.charAt(0) === str.charAt(0).toUpperCase(),
+      validate: notEmpty,
+      filter: (str) => {
+        const firstLetter = str.charAt(0).toUpperCase();
+        return `${firstLetter}${str.slice(1,str.length)}`;
+      },
       default: '',
     });
   }
