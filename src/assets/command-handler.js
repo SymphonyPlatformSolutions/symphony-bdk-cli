@@ -1,4 +1,4 @@
-export const genericCommandHandler = (basePackage, commandName) => `package com.daitan.br.marvel.command;
+export const genericCommandHandler = (basePackage, commandName) => `package ${basePackage}.command;
 
 import java.util.HashMap;
 import java.util.Map;
