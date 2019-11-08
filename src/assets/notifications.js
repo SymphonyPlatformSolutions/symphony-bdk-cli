@@ -80,11 +80,14 @@ export const tableTemplateEntity = (notificationName) =>`export const ENRICHER_E
   ${notificationName}: {
     type: 'com.symphony.ms.${notificationName}',
     json: {
-      title: 'Hello world!',
-      content: [
-        'Option A',
-        'Option B',
-        'Option C',
+      headers: [
+        'Column A',
+        'Column B',
+        'Column C',
+      ],
+      rows: [
+        ['<b>lorem</b>', '<i>ipsum</i>', 'liris'],
+        ['<b>example</b>', 'sample', 'data'],
       ],
     },
   },`;
@@ -92,8 +95,8 @@ export const tableTemplateEntity = (notificationName) =>`export const ENRICHER_E
 export const tableTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.${notificationName}.type:
         template = SmsRenderer.renderAppMessage(
           {
-            title: data.title,
-            content: data.content,
+            headers: data.headers,
+            rows: data.rows,
           },
           SmsRenderer.smsTypes.TABLE,
         );

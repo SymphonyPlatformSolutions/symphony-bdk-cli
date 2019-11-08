@@ -109,8 +109,8 @@ export async function createBotApp(options) {
     const configBotBits = fs.readFileSync(botConfigPath);
     const configBot = JSON.parse(configBotBits);
     configBot.botUsername = options.botUsername;
-    configBot.botPrivateKeyName = `${options.projectName}_privatekey.pkcs8`;
-    configBot.appPrivateKeyName = `${options.projectName}_privatekey.pkcs8`;
+    configBot.botPrivateKeyName = `${options.projectName.toLowerCase()}_privatekey.pkcs8`;
+    configBot.appPrivateKeyName = `${options.projectName.toLowerCase()}_privatekey.pkcs8`;
     configBot.appId = options.applicationId;
     configBot.botEmailAddress = options.botServiceEmail;
     configBot.sessionAuthHost = options.podAddress;
