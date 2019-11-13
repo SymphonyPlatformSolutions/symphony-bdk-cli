@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import {
   getAnwsers,
-  NOTIFICATION_CUSTOM_OPTIONS,
+  NOTIFICATION_CUSTOM_OPTIONS, NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS,
   NOTIFICATION_TEMPLATE_OPTIONS,
 } from "../questions/create-notification";
 import fs from 'fs';
@@ -32,6 +32,22 @@ import {
   customNames,
   customTemplates,
 } from "../assets/notifications";
+import {
+  rfqInitiatedTemplateEntity,
+  rfqInitiatedTemplateEnricher,
+  rfqAknowledgedTemplateEntity,
+  rfqAknowledgedTemplateEnricher,
+  rfqPricedTemplateEntity,
+  rfqPricedTemplateEnricher,
+  rfqAgreedPayTemplateEntity,
+  rfqAgreedPayTemplateEnricher,
+  rfqConfirmedTemplateEntity,
+  rfqConfirmedTemplateEnricher,
+  rfqTimeoutTemplateEntity,
+  rfqTimeoutTemplateEnricher,
+  rfqPassedTemplateEntity,
+  rfqPassedTemplateEnricher,
+} from '../assets/financial-notifications';
 import { spinnerStart, spinnerError, spinnerStop} from "../../utils/spinner";
 
 const getFiles = (extAppPath) => {
@@ -146,6 +162,39 @@ const createNotification = async (options) => {
           notificationEnricher.to = listTemplateEnricher(awnsers.notificationName);
           break;
       };
+    }
+
+    if (awnsers.financialElement) {
+      switch (awnsers.financialElement) {
+        case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_INITIATED:
+          notificationEntityOption.to = rfqInitiatedTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = rfqInitiatedTemplateEnricher(awnsers.notificationName);
+        break;
+        case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_AKNOWLEDGED:
+          notificationEntityOption.to = rfqAknowledgedTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = rfqAknowledgedTemplateEnricher(awnsers.notificationName);
+          break;
+        case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_PRICED:
+          notificationEntityOption.to = rfqPricedTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = rfqPricedTemplateEnricher(awnsers.notificationName);
+          break;
+        case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_AGREED_PAY:
+          notificationEntityOption.to = rfqAgreedPayTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = rfqAgreedPayTemplateEnricher(awnsers.notificationName);
+          break;
+        case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_CONFIRMED:
+          notificationEntityOption.to = rfqConfirmedTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = rfqConfirmedTemplateEnricher(awnsers.notificationName);
+          break;
+        case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_TIMEOUT:
+          notificationEntityOption.to = rfqTimeoutTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = rfqTimeoutTemplateEnricher(awnsers.notificationName);
+          break;
+        case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_PASSED:
+          notificationEntityOption.to = rfqPassedTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = rfqPassedTemplateEnricher(awnsers.notificationName);
+          break;
+      }
     }
 
     await ReplaceInFiles(notificationEntityOption);
