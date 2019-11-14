@@ -2,6 +2,12 @@ import inquirer from "inquirer";
 const chalk = require('chalk');
 import { isUpperCase } from "../../utils/helper";
 
+export const NOTIFICATION_TYPES = [
+  'Template',
+  'Financial Elements',
+  'Custom',
+];
+
 export const NOTIFICATION_TEMPLATE_OPTIONS = {
   SIMPLE: 'SIMPLE',
   ALERT: 'ALERT',
@@ -9,6 +15,16 @@ export const NOTIFICATION_TEMPLATE_OPTIONS = {
   INFORMATION: 'INFORMATION',
   TABLE: 'TABLE',
   LIST: 'LIST',
+};
+
+export const NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS = {
+  RFQ_INITIATED: 'RFQ_INITIATED',
+  RFQ_AKNOWLEDGED: 'RFQ_AKNOWLEDGED',
+  RFQ_PRICED: 'RFQ_PRICED',
+  RFQ_AGREED_PAY: 'RFQ_AGREED_PAY',
+  RFQ_CONFIRMED: 'RFQ_CONFIRMED',
+  RFQ_TIMEOUT: 'RFQ_TIMEOUT',
+  RFQ_PASSED: 'RFQ_PASSED',
 };
 
 export const NOTIFICATION_CUSTOM_OPTIONS = {
@@ -35,7 +51,7 @@ async function promptForMissingOptions(options) {
       type: 'list',
       name: 'type',
       message: 'Would you like to use a template, or build your own?',
-      choices: ['Template', 'Custom'],
+      choices: NOTIFICATION_TYPES,
     });
   }
 
@@ -46,7 +62,18 @@ async function promptForMissingOptions(options) {
       message: 'which notification template would you like to use?',
       choices: Object.keys(NOTIFICATION_TEMPLATE_OPTIONS).map(key => key),
       default: null,
-      when: (responses) => responses.type === 'Template',
+      when: (responses) => responses.type === NOTIFICATION_TYPES[0],
+    });
+  }
+
+  if (!options.financialElement) {
+    questions.push({
+      type: 'list',
+      name: 'financialElement',
+      message: 'which notification template would you like to use?',
+      choices: Object.keys(NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS).map(key => key),
+      default: null,
+      when: (responses) => responses.type === NOTIFICATION_TYPES[1],
     });
   }
 
@@ -57,7 +84,7 @@ async function promptForMissingOptions(options) {
       message: 'which notification template would you like to use?',
       choices: Object.keys(NOTIFICATION_CUSTOM_OPTIONS).map(key => key),
       default: null,
-      when: (responses) => responses.type === 'Custom',
+      when: (responses) => responses.type === NOTIFICATION_TYPES[2],
     });
   }
 
@@ -68,6 +95,7 @@ async function promptForMissingOptions(options) {
     notificationName: options.notificationName || answers.notificationName,
     type: options.type || answers.type,
     template: options.template || answers.template,
+    financialElement: options.financialElement || answers.financialElement,
     custom: options.custom || answers.custom,
   };
 }
