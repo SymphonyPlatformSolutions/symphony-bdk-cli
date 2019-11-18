@@ -38,15 +38,6 @@ async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the following questions'));
   const questions = [];
 
-  if (!options.notificationName) {
-    questions.push({
-      name: 'notificationName',
-      message: 'What\'s the template name? (UPPER_CAMEL_CASE)',
-      validate: isUpperCase,
-      default: '',
-    });
-  }
-
   if (!options.type) {
     questions.push({
       type: 'list',
@@ -86,6 +77,15 @@ async function promptForMissingOptions(options) {
       choices: Object.keys(NOTIFICATION_CUSTOM_OPTIONS).map(key => key),
       default: null,
       when: (responses) => responses.type === NOTIFICATION_TYPES[2],
+    });
+  }
+
+  if (!options.notificationName) {
+    questions.push({
+      name: 'notificationName',
+      message: 'What\'s the template name? (UPPER_CAMEL_CASE)',
+      validate: isUpperCase,
+      default: '',
     });
   }
 
