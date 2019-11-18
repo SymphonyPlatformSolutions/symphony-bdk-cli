@@ -73,10 +73,21 @@ async function promptForMissingOptions(options) {
     questions.push({
       type: 'list',
       name: 'custom',
-      message: 'which notification template would you like to use?',
-      choices: Object.keys(NOTIFICATION_CUSTOM_OPTIONS).map(key => key),
+      message: 'which custom notification template would you like to use?',
+      choices: Object.keys(NOTIFICATION_CUSTOM_OPTIONS).map(key => NOTIFICATION_CUSTOM_OPTIONS[key]),
       default: null,
       when: (responses) => responses.type === NOTIFICATION_TYPES[2],
+    });
+  }
+
+  if (!options.customFinancialElement) {
+    questions.push({
+      type: 'list',
+      name: 'customFinancialElement',
+      message: 'which RFQ Card template would you like to use?',
+      choices: Object.keys(NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS).map(key => NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS[key]),
+      default: null,
+      when: (responses) => responses.custom === NOTIFICATION_CUSTOM_OPTIONS.FINANCIAL_TEMPLATE,
     });
   }
 
@@ -97,6 +108,7 @@ async function promptForMissingOptions(options) {
     type: options.type || answers.type,
     template: options.template || answers.template,
     financialElement: options.financialElement || answers.financialElement,
+    customFinancialElement: options.customFinancialElement || answers.customFinancialElement,
     custom: options.custom || answers.custom,
   };
 }

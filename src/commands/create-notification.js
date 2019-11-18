@@ -31,9 +31,9 @@ import {
   customImport,
   customNames,
   customTemplates,
-  customFinancialTemplateEntity,
-  customFinancialTemplateEnricher,
-  customFinancialTemplateHbs,
+  customRfqInitiatedTemplateEntity,
+  customRfqInitiatedTemplateEnricher,
+  rfqInitiatedHbsTemplate,
 } from "../assets/notifications";
 import {
   rfqInitiatedTemplateEntity,
@@ -122,9 +122,17 @@ const createNotification = async (options) => {
           fs.writeFileSync(hbsFile, customNewTemplateHbs);
           break;
         case NOTIFICATION_CUSTOM_OPTIONS.FINANCIAL_TEMPLATE:
-          notificationEntityOption.to = customFinancialTemplateEntity(awnsers.notificationName);
-          notificationEnricher.to = customFinancialTemplateEnricher(awnsers.notificationName);
-          fs.writeFileSync(hbsFile, customFinancialTemplateHbs);
+          switch (awnsers.customFinancialElement) {
+            case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_INITIATED:
+                notificationEntityOption.to = customRfqInitiatedTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = customRfqInitiatedTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqInitiatedHbsTemplate);
+              break;
+            default:
+              throw new Error(chalk.red(`${awnsers.customFinancialElement} Template Not Implemented yet.`));
+              break;
+          }
+
           break;
         case NOTIFICATION_CUSTOM_OPTIONS.ALERT:
           notificationEntityOption.to = customAlertTemplateEntity(awnsers.notificationName);

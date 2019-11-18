@@ -286,30 +286,10 @@ export const customNewTemplateHbs = `<div>
 </div>`;
 
 
-/***************** Custom Financial Template *******************/
-
-export const customFinancialTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
-  ${notificationName}: {
-    type: 'com.symphony.ms.${notificationName}',
-    json: {
-      type: 'RFQ',
-      shortCode: 'EX',
-      content: 'My Custom financial component!',
-    },
-  },`;
-
-export const customFinancialTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.${notificationName}.type:
-        template = SmsRenderer.renderAppMessage(
-          {
-            ...data,
-          },
-          CUSTOM_TEMPLATE_NAMES.${notificationName},
-        );
-        break;
-      default:`;
+/***************** Custom Financial Templates *******************/
 
 
-export const customFinancialTemplateHbs = `<div style="display:flex">
+const rfqcardHbsTemplate = (body) => `<div style="display:flex">
     <div style="display: flex;
         color: white;
         flex-direction: column;
@@ -319,7 +299,7 @@ export const customFinancialTemplateHbs = `<div style="display:flex">
         border-radius: 4px 0px 0px 4px;
         padding: 5px 10px;
         border: 1px solid #E0E0E0;">
-        <p style="font-size:12px;margin: 0;">{{message.type}}</p>
+        <p style="font-size:12px;margin: 0;">RFQ</p>
         <p style="font-size: 16px;margin: 0;"><b>{{message.shortCode}}</b></p>
     </div>
     <div style="display: flex;
@@ -331,7 +311,93 @@ export const customFinancialTemplateHbs = `<div style="display:flex">
         border-bottom-right-radius: 4px;
         padding: 5px;
         border-left: none;">
-          <p style="padding: 0;margin: 0;">{{message.content}}</p>
+          ${body}
     </div>
 </div>`;
+
+export const customRfqInitiatedTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
+  ${notificationName}: {
+    type: 'com.symphony.ms.${notificationName}',
+    json: {
+      dealerName: 'Hydra',
+      state: {
+        state: 'rfq_initiated',
+      },
+      action: 'sms-sparc/start-rfq',
+      rfqId: 'f152f549-a2d9-4c92-9a60-f7dedc9f823c',
+      product: {
+        product: 'IRS',
+        currency: 'USD',
+        index: '3M-LIBOR',
+        clearingHouse: 'EUREX',
+        start: {
+          date: 'spot',
+          type: 'spot',
+        },
+        tenor: {
+          date: '1y',
+          type: 'single',
+          value: {
+            firstValue: 1,
+          },
+        },
+        sizeType: 'DV01',
+        size: {
+          currency: 'USD',
+          value: '3',
+          sizeMultiplier: 'k',
+          size: 'USD3k',
+        },
+        payDirection: 'PAY',
+        rate: 'Rate',
+      },
+      colorIndex: 6,
+      shortCode: 'w7',
+      initiatorUserId: 351775001411610,
+      initiatorCompanyName: 'Stark Industries',
+      startTime: 1568975971,
+      shorthandMessage: 'RFQ sent.',
+    },
+  },`;
+
+export const rfqInitiatedHbsTemplate = rfqcardHbsTemplate(`{{#with message.product}}
+          {{#if product}}
+            {{> badge suffix=product }}
+          {{/if}}
+  
+          {{#if index}}
+            {{> badge prefix=index suffix=currency }}
+          {{/if}}
+  
+          {{#if clearingHouse}}
+            {{> badge suffix=clearingHouse }}
+          {{/if}}
+  
+          {{#if start}}
+            {{> badge prefix="start" suffix=start.date }}
+          {{/if}}
+  
+          {{#if tenor}}
+            {{> badge prefix="tenor" suffix=tenor.date }}
+          {{/if}}
+  
+          {{#if sizeType}}
+            {{> badge prefix=sizeType suffix=size.size }}
+          {{/if}}
+  
+          {{#if tenor}}
+            {{> badge prefix="client" suffix=payDirection }}
+          {{/if}}
+        {{/with}}`);
+
+export const customRfqInitiatedTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.${notificationName}.type:
+        template = SmsRenderer.renderAppMessage(
+          {
+            ...data,
+          },
+          CUSTOM_TEMPLATE_NAMES.${notificationName},
+        );
+        break;
+      default:`;
+
 
