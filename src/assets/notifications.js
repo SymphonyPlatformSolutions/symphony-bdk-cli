@@ -184,7 +184,7 @@ export const notificationTemplateEnricher = (notificationName) =>`case ENRICHER_
 
 /***************************************************************************
  * Custom Templates
- */
+ ****************************************************************************/
 
 export const customImport = (notificationName) => `/* global SYMPHONY */
 import ${notificationName.toLowerCase()} from './templates/components/${notificationName.toLowerCase()}.hbs';`;
@@ -284,3 +284,54 @@ export const customNewTemplateEnricher = (notificationName) =>`case ENRICHER_EVE
 export const customNewTemplateHbs = `<div>
   {{{message.title}}}
 </div>`;
+
+
+/***************** Custom Financial Template *******************/
+
+export const customFinancialTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
+  ${notificationName}: {
+    type: 'com.symphony.ms.${notificationName}',
+    json: {
+      type: 'RFQ',
+      shortCode: 'EX',
+      content: 'My Custom financial component!',
+    },
+  },`;
+
+export const customFinancialTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.${notificationName}.type:
+        template = SmsRenderer.renderAppMessage(
+          {
+            ...data,
+          },
+          CUSTOM_TEMPLATE_NAMES.${notificationName},
+        );
+        break;
+      default:`;
+
+
+export const customFinancialTemplateHbs = `<div style="display:flex">
+    <div style="display: flex;
+        color: white;
+        flex-direction: column;
+        justify-content: center;
+        align-items:center;
+        background-color: #AB47BC;
+        border-radius: 4px 0px 0px 4px;
+        padding: 5px 10px;
+        border: 1px solid #E0E0E0;">
+        <p style="font-size:12px;margin: 0;">{{message.type}}</p>
+        <p style="font-size: 16px;margin: 0;"><b>{{message.shortCode}}</b></p>
+    </div>
+    <div style="display: flex;
+        flex-wrap: wrap;
+        width:-webkit-fill-available;
+        border: 1px solid #E0E0E0;
+        align-items: center;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        padding: 5px;
+        border-left: none;">
+          <p style="padding: 0;margin: 0;">{{message.content}}</p>
+    </div>
+</div>`;
+

@@ -31,6 +31,9 @@ import {
   customImport,
   customNames,
   customTemplates,
+  customFinancialTemplateEntity,
+  customFinancialTemplateEnricher,
+  customFinancialTemplateHbs,
 } from "../assets/notifications";
 import {
   rfqInitiatedTemplateEntity,
@@ -117,6 +120,11 @@ const createNotification = async (options) => {
           notificationEntityOption.to = customNewTemplateEntity(awnsers.notificationName);
           notificationEnricher.to = customNewTemplateEnricher(awnsers.notificationName);
           fs.writeFileSync(hbsFile, customNewTemplateHbs);
+          break;
+        case NOTIFICATION_CUSTOM_OPTIONS.FINANCIAL_TEMPLATE:
+          notificationEntityOption.to = customFinancialTemplateEntity(awnsers.notificationName);
+          notificationEnricher.to = customFinancialTemplateEnricher(awnsers.notificationName);
+          fs.writeFileSync(hbsFile, customFinancialTemplateHbs);
           break;
         case NOTIFICATION_CUSTOM_OPTIONS.ALERT:
           notificationEntityOption.to = customAlertTemplateEntity(awnsers.notificationName);
