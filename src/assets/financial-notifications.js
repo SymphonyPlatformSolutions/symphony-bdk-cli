@@ -45,7 +45,7 @@ export const rfqInitiatedTemplateEntity = (notificationName) =>`export const ENR
       initiatorUserId: 351775001411610,
       initiatorCompanyName: 'Stark Industries',
       startTime: 1568975971,
-      shorthandMessage: 'RFQ sent.',
+      shorthandMessage: 'Waiting for dealer to acknowledge',
     },
   },`;
 

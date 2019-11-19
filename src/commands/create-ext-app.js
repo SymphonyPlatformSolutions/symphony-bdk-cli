@@ -1,10 +1,10 @@
 import chalk from "chalk";
 import { getAnwsers } from "../questions/ext-app";
-import {gitFlow} from "../git/git";
-import {deleteFolder} from "../files/utils";
-import {local} from "../../utils/constants";
-import {initializeExtensionApp} from "../initializer/initializer";
-import {extensionAppFilesFlow} from "../files/files";
+import { gitFlow } from "../git/git";
+import { deleteFolder } from "../files/utils";
+import { local } from "../../utils/constants";
+import { initializeExtensionApp } from "../initializer/initializer";
+import { extensionAppFilesFlow } from "../files/files";
 import fs from 'fs';
 const execSync = require('child_process').execSync;
 

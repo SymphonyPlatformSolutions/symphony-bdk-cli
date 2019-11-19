@@ -31,6 +31,13 @@ import {
   customImport,
   customNames,
   customTemplates,
+  rfqTemplateEnricher,
+  rfqInitiatedAknowledgedHbsTemplate,
+  rfqPricedHbsTemplate,
+  rfqAgreedPayHbsTemplate,
+  rfqConfirmedHbsTemplate,
+  rfqPassedHbsTemplate,
+  rfqTimeoutHbsTemplate,
 } from "../assets/notifications";
 import {
   rfqInitiatedTemplateEntity,
@@ -117,6 +124,49 @@ const createNotification = async (options) => {
           notificationEntityOption.to = customNewTemplateEntity(awnsers.notificationName);
           notificationEnricher.to = customNewTemplateEnricher(awnsers.notificationName);
           fs.writeFileSync(hbsFile, customNewTemplateHbs);
+          break;
+        case NOTIFICATION_CUSTOM_OPTIONS.FINANCIAL_TEMPLATE:
+          switch (awnsers.customFinancialElement) {
+            case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_INITIATED:
+                notificationEntityOption.to = rfqInitiatedTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = rfqTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqInitiatedAknowledgedHbsTemplate);
+              break;
+            case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_AKNOWLEDGED:
+                notificationEntityOption.to = rfqAknowledgedTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = rfqTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqInitiatedAknowledgedHbsTemplate);
+              break;
+            case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_PRICED:
+                notificationEntityOption.to = rfqPricedTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = rfqTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqPricedHbsTemplate);
+              break;
+            case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_AGREED_PAY:
+                notificationEntityOption.to = rfqAgreedPayTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = rfqTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqAgreedPayHbsTemplate);
+              break;
+              case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_CONFIRMED:
+                notificationEntityOption.to = rfqConfirmedTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = rfqTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqConfirmedHbsTemplate);
+              break;
+              case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_PASSED:
+                notificationEntityOption.to = rfqPassedTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = rfqTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqPassedHbsTemplate);
+              break;
+              case NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS.RFQ_TIMEOUT:
+                notificationEntityOption.to = rfqTimeoutTemplateEntity(awnsers.notificationName);
+                notificationEnricher.to = rfqTemplateEnricher(awnsers.notificationName);
+                fs.writeFileSync(hbsFile, rfqTimeoutHbsTemplate);
+              break;
+            default:
+              throw new Error(chalk.red(`${awnsers.customFinancialElement} Template Not Implemented yet.`));
+              break;
+          }
+
           break;
         case NOTIFICATION_CUSTOM_OPTIONS.ALERT:
           notificationEntityOption.to = customAlertTemplateEntity(awnsers.notificationName);

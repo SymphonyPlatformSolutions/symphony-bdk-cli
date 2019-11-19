@@ -1,3 +1,6 @@
+export const addNewCommandToHelp = (commandName) => `/login - returns the HTTP authorization header required to talk to external system",
+        botMention + " /${commandName.toLowerCase()} - auto generated command, please insert description",`;
+
 export const genericCommandHandler = (basePackage, commandName) => `package ${basePackage}.command;
 
 import java.util.HashMap;
@@ -30,5 +33,67 @@ public class ${commandName}CommandHandler extends CommandHandler {
 }
 `;
 
-export const addNewCommandToHelp = (commandName) => `/login - returns the HTTP authorization header required to talk to external system",
-        botMention + " /${commandName.toLowerCase()} - auto generated command, please insert description",`;
+export const customSymphonyElementsHandler = (basePackage, commandName, formId) => `package ${basePackage}.elements;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
+
+import ${basePackage}.internal.command.model.BotCommand;
+import ${basePackage}.internal.elements.ElementsHandler;
+import ${basePackage}.internal.event.model.SymphonyElementsEvent;
+import ${basePackage}.internal.message.model.SymphonyMessage;
+
+public class ${commandName}Handler extends ElementsHandler {
+  private static final String FORM_ID = "${formId}";
+
+  @Override
+  protected Predicate<String> getCommandMatcher() {
+    return Pattern
+        .compile("^@"+ getBotName() + " /${commandName.toLowerCase()}")
+        .asPredicate();
+  }
+
+  @Override
+  protected String getElementsFormId() {
+    return FORM_ID;
+  }
+
+  @Override
+  public void displayElements(BotCommand command,
+      SymphonyMessage elementsResponse) {
+    Map<String, String> data = new HashMap<>();
+    data.put("form_id", FORM_ID);
+    elementsResponse.setTemplateFile("${commandName.toLowerCase()}.ftl", data);
+  }
+
+  @Override
+  public void handleAction(SymphonyElementsEvent event,
+      SymphonyMessage elementsResponse) {
+    elementsResponse.setMessage("Received and treated the form response!");
+  }
+
+}`;
+
+export const customSymphonyElementsTemplate = `<form id="\$\{form_id\}">
+  <h3>Sample form</h3>
+  <h6>From currency</h6>
+  <text-field minlength="3" maxlength="3" masked="false" name="fromCurrency" required="true"></text-field>
+  <h6>To currency</h6>
+  <text-field minlength="3" maxlength="3" masked="false" name="toCurrency" required="true"></text-field>
+  <h6>Amount</h6>
+  <text-field minlength="1" maxlength="9" masked="false" name="amount" required="true"></text-field>
+  <h6>Assigned To:</h6>
+  <person-selector name="assignedTo" placeholder="Assign to.." required="false" />
+  <h6>Quote Status:</h6>
+  <radio name="status" checked="true" value="pending">Pending</radio>
+  <radio name="status" checked="false" value="confirmed">Confirmed</radio>
+  <radio name="status" checked="false" value="settled">Settled</radio>
+  <h6>Remarks:</h6>
+  <textarea name="remarks" placeholder="Enter your remarks.." required="false"></textarea>
+  <button name="confirm" type="action">Confirm</button>
+  <button name="reset" type="reset">Reset</button>
+</form>
+`;
+
