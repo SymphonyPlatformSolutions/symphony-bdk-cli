@@ -1,3 +1,37 @@
+const rfqColorHelper = function (code) {
+    switch (code) {
+        case 0:
+            return '#EC407A';
+        break;
+        case 1:
+            return '#880E4F';
+        break;
+        case 2:
+            return '#AB47BC';
+        break;
+        case 3:
+            return '#4A148C';
+        break;
+        case 4:
+            return '#42A5F5';
+        break;
+        case 5:
+            return '#006064';
+        break;
+        case 6:
+            return '#00BFA5';
+        break;
+        case 7:
+            return '#E17900';
+        break;
+        case 8:
+            return '#8C513B';
+        break;
+        default:
+            return '#00BFA5';
+        break;
+    }
+};
 /***
  * Templates
  */
@@ -285,17 +319,22 @@ export const customNewTemplateHbs = `<div>
   {{{message.title}}}
 </div>`;
 
-
+/****************************************************************/
 /***************** Custom Financial Templates *******************/
+/****************************************************************/
 
+/***************** Generic Elements *******************/
 
-const rfqcardHbsTemplate = (body) => `<div style="display:flex">
+const rfqcardHbsTemplate = (body, colorIndex) => `{{#if message.shorthandMessage}}
+    <p>{{message.shorthandMessage}}</p>
+{{/if}}
+<div style="display:flex">
     <div style="display: flex;
         color: white;
         flex-direction: column;
         justify-content: center;
         align-items:center;
-        background-color: #AB47BC;
+        background-color: ${rfqColorHelper(colorIndex)};
         border-radius: 4px 0px 0px 4px;
         padding: 5px 10px;
         border: 1px solid #E0E0E0;">
@@ -315,52 +354,20 @@ const rfqcardHbsTemplate = (body) => `<div style="display:flex">
     </div>
 </div>`;
 
-export const customRfqInitiatedTemplateEntity = (notificationName) =>`export const ENRICHER_EVENTS = {
-  ${notificationName}: {
-    type: 'com.symphony.ms.${notificationName}',
-    json: {
-      dealerName: 'Hydra',
-      state: {
-        state: 'rfq_initiated',
-      },
-      action: 'sms-sparc/start-rfq',
-      rfqId: 'f152f549-a2d9-4c92-9a60-f7dedc9f823c',
-      product: {
-        product: 'IRS',
-        currency: 'USD',
-        index: '3M-LIBOR',
-        clearingHouse: 'EUREX',
-        start: {
-          date: 'spot',
-          type: 'spot',
-        },
-        tenor: {
-          date: '1y',
-          type: 'single',
-          value: {
-            firstValue: 1,
+export const rfqTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.${notificationName}.type:
+        template = SmsRenderer.renderAppMessage(
+          {
+            ...data,
           },
-        },
-        sizeType: 'DV01',
-        size: {
-          currency: 'USD',
-          value: '3',
-          sizeMultiplier: 'k',
-          size: 'USD3k',
-        },
-        payDirection: 'PAY',
-        rate: 'Rate',
-      },
-      colorIndex: 6,
-      shortCode: 'w7',
-      initiatorUserId: 351775001411610,
-      initiatorCompanyName: 'Stark Industries',
-      startTime: 1568975971,
-      shorthandMessage: 'RFQ sent.',
-    },
-  },`;
+          CUSTOM_TEMPLATE_NAMES.${notificationName},
+        );
+        break;
+      default:`;
 
-export const rfqInitiatedHbsTemplate = rfqcardHbsTemplate(`{{#with message.product}}
+
+/***************** RFQ INITIATED *******************/
+
+export const rfqInitiatedAknowledgedHbsTemplate = rfqcardHbsTemplate(`{{#with message.product}}
           {{#if product}}
             {{> badge suffix=product }}
           {{/if}}
@@ -388,16 +395,107 @@ export const rfqInitiatedHbsTemplate = rfqcardHbsTemplate(`{{#with message.produ
           {{#if tenor}}
             {{> badge prefix="client" suffix=payDirection }}
           {{/if}}
-        {{/with}}`);
-
-export const customRfqInitiatedTemplateEnricher = (notificationName) =>`case ENRICHER_EVENTS.${notificationName}.type:
-        template = SmsRenderer.renderAppMessage(
-          {
-            ...data,
-          },
-          CUSTOM_TEMPLATE_NAMES.${notificationName},
-        );
-        break;
-      default:`;
+        {{/with}}`,6);
 
 
+/***************** RFQ Priced *******************/
+
+export const rfqPricedHbsTemplate = rfqcardHbsTemplate(`<div style="display: flex;flex-direction: column">
+    <p style="color:#979797;">{{message.dealerName}} pay / {{message.initiatorCompanyName}} rec {{message.dealerName}} rec/{{message.initiatorCompanyName}}</p>
+
+   {{> rfq-value receives=message.state.receive.price pays=message.state.pay.price}}
+
+    <br/>
+
+    <b>Respond by typing: </b>
+
+    <div style="display: flex;
+        flex-direction: row;
+        width:-webkit-fill-available;
+        max-width: 500px;
+    ">
+        <div style="display: flex;
+            width: 50%;
+            align-items: center;">
+            <span style=" border: 1px solid #EEEEEE;
+            background-color: #FAFAFA;
+            padding: 5px;
+            color: #E01E5A;
+            border-radius: 4px;">
+                {{message.shortCode}} rec {{message.state.receive.price}}
+            </span>
+            <p style="margin: 0 0 0 5px;">Agree to Rec {{message.state.receive.price}}</p>
+        </div>
+        <div style="display: flex;
+            width: 50%;
+            border-radius: 4px;
+            align-items: center;">
+              <span style=" border: 1px solid #EEEEEE;
+                background-color: #FAFAFA;
+                color: #E01E5A;
+                padding: 5px;
+                border-radius: 4px;">
+                {{message.shortCode}} pay {{message.state.pay.price}}
+            </span>
+            <p style="margin: 0 0 0 5px">Agree to Pay {{message.state.pay.price}}</p>
+        </div>
+    </div>
+</div>`,6);
+
+
+/***************** RFQ AGREED_PAY *******************/
+
+export const rfqAgreedPayHbsTemplate = rfqcardHbsTemplate(`<div style="display: flex;flex-direction: column">
+    <div style="display: flex">
+        <p style="color:#979797;text-decoration: line-through;">{{message.dealerName}} pay / {{message.initiatorCompanyName}} </p>
+        <p style="color:#979797;">rec {{message.dealerName}} rec/{{message.initiatorCompanyName}}</p>
+    </div>
+   {{> rfq-value receives='-' pays=message.state.pay.price agreed=true}}
+</div>`,6);
+
+/***************** RFQ CONFIRMED *******************/
+
+export const rfqConfirmedHbsTemplate = rfqcardHbsTemplate(`<div style="display: flex; flex-direction: column">
+    <div style="display: flex; flex-direction: row;flex-wrap:wrap;">
+        {{> rfq-start-ack message=message.product}}
+    </div>
+    <br/>
+    <div style="display: flex">
+        <p style="margin: 0 0 0 5px">Agreed by {{message.state.userName}}</p>
+        <div style="background-color: #7575753b;
+            border: 1px solid #EEEEEE;
+            margin-left: 10px;
+            padding: 0px 5px;
+            border-radius: 2px">
+            <p style="margin: 0;">{{message.rfqId}}</p>
+        </div>
+    </div>
+</div>`, 6);
+
+/***************** RFQ PASSED *******************/
+
+export const rfqPassedHbsTemplate = rfqcardHbsTemplate(`<div style="display: flex;align-items: center; flex-wrap: wrap">
+        <p style="margin: 0;">RFQ with ID</p>
+        <div style="background-color: #7575753b;
+            border: 1px solid #EEEEEE;
+            margin-left: 5px;
+            padding: 0px 5px;
+            border-radius: 2px">
+            <p style="margin: 0;">{{message.rfqId}}</p>
+        </div>
+        <p style="margin: 0 0 0 5px">has ended.</p>
+</div>`, 8);
+
+/***************** RFQ Timeout *******************/
+
+export const rfqTimeoutHbsTemplate = rfqcardHbsTemplate(`<div style="display: flex;align-items: center; flex-wrap: wrap">
+        <p style="margin: 0;">RFQ with ID</p>
+        <div style="background-color: #7575753b;
+            border: 1px solid #EEEEEE;
+            margin-left: 5px;
+            padding: 0px 5px;
+            border-radius: 2px">
+            <p style="margin: 0;">{{message.rfqId}}</p>
+        </div>
+        <p style="margin: 0 0 0 5px">has ended.</p>
+</div>`, 7);

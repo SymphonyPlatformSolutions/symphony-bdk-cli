@@ -1,13 +1,13 @@
 import chalk from "chalk";
 import {
-  getAnwsers, SYMPHONY_ELEMENTS_HANDLER_TYPES,
+  getAnwsers,
+  HANDLER_TYPES,
 } from "../questions/create-command-handler";
 import fs from 'fs';
 import ReplaceInFiles from 'replace-in-files';
 import {
   genericCommandHandler,
   addNewCommandToHelp,
-  formBuilderSymphonyElementsHandler,
   customSymphonyElementsHandler,
   customSymphonyElementsTemplate,
 } from "../assets/command-handler";
@@ -34,22 +34,15 @@ const createCommandHandler = async (options) => {
     const botSymphonyElementsCommandHandlerPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/elements/${awnsers.commandName}Handler.java`;
     const botTemplatesRootPath = `${botRoot}/src/main/resources/templates`;
 
-    switch (awnsers.elementType) {
-      case SYMPHONY_ELEMENTS_HANDLER_TYPES.SIMPLE_FORM_BUILDER:
-         const simpleFormBuilder = formBuilderSymphonyElementsHandler(javaBasePackage, awnsers.commandName, awnsers.formId);
-         fs.writeFileSync(botSymphonyElementsCommandHandlerPath, simpleFormBuilder);
-        break;
-      case SYMPHONY_ELEMENTS_HANDLER_TYPES.CUSTOM_TEMPLATE:
-         const templatePath = `${botTemplatesRootPath}/${awnsers.commandName.toLowerCase()}.ftl`;
-         const symphElementsHandler = customSymphonyElementsHandler(javaBasePackage, awnsers.commandName, awnsers.formId);
-         const elementsTemplate = customSymphonyElementsTemplate;
-         fs.writeFileSync(botSymphonyElementsCommandHandlerPath, symphElementsHandler);
-         fs.writeFileSync(templatePath, elementsTemplate);
-        break;
-      default:
-          const genericTemplate = genericCommandHandler(javaBasePackage, awnsers.commandName);
-          fs.writeFileSync(botCommandHandlerRootPath, genericTemplate);
-        break;
+    if (awnsers.type === HANDLER_TYPES[0]) {
+      const genericTemplate = genericCommandHandler(javaBasePackage, awnsers.commandName);
+      fs.writeFileSync(botCommandHandlerRootPath, genericTemplate);
+    } else {
+      const templatePath = `${botTemplatesRootPath}/${awnsers.commandName.toLowerCase()}.ftl`;
+      const symphElementsHandler = customSymphonyElementsHandler(javaBasePackage, awnsers.commandName, awnsers.formId);
+      const elementsTemplate = customSymphonyElementsTemplate;
+      fs.writeFileSync(botSymphonyElementsCommandHandlerPath, symphElementsHandler);
+      fs.writeFileSync(templatePath, elementsTemplate);
     }
 
     const helpCommand = {
