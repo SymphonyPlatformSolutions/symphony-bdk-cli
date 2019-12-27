@@ -76,6 +76,5 @@ so you can start testing your certs on symphony right away
 ## Troubleshooting
 
 1. Im trying to create an extension app or bot but the cli fails, and it says that i dont have permission?
-> In that case, be sure that you have access to the sms-sdk-toolbox-ui, sms-dev-mock-client, and sms-sdk-botler projects
+> In that case, be sure that you have access to the sms-sdk-toolbox-ui, sms-dev-mock-client, and sms-bot-sdk projects
 >on github, also be sure that you have properly added your symphony account ssh keys to github.
-

@@ -10,7 +10,7 @@ import {initializeBotApp} from "../initializer/initializer";
 import {botFilesFlow} from "../files/files";
 import fs from 'fs';
 
-const repoUrl = "git@github.com:SymphonyPlatformSolutions/sms-sdk-botler.git";
+const repoUrl = "git@github.com:SymphonyPlatformSolutions/sms-bot-sdk.git";
 const repoBranch = 'refs/remotes/origin/develop';
 
 const createBot = async (options) => {
