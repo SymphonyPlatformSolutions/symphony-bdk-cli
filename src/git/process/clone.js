@@ -34,6 +34,7 @@ export async function getTemplateProject(repoUrl) {
   return await nodegit.Clone(repoUrl, local, cloneOpts).then(function (repo) {
     spinnerStop(chalk.bold('Boilerplate ') + chalk.green.bold("accessed"));
   }).catch(function (err) {
+    console.log(err);
     spinnerError(err);
   });
 }

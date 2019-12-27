@@ -15,7 +15,7 @@ const getDirectories = (src, callback) => new Promise((resolve) => glob(`${src}/
   resolve(list);
 }));
 
-const basePackage = ['com','symphony','ms','songwriter'];
+const basePackage = ['com','symphony','ms','bot'];
 
 const processPackageNames = (options, srcFiles, testFiles) => {
   const packageList = options.basePackage.split('.');
@@ -85,7 +85,7 @@ export async function createBotApp(options) {
   const list = await getDirectories(`${options.targetDirectory}/src`);
   const renamePackageOptions = {
     files: list,
-    from: /com.symphony.ms.songwriter/g,
+    from: /com.symphony.ms.bot/g,
     to: `${options.basePackage}.${options.projectName.toLowerCase()}`,
   };
 

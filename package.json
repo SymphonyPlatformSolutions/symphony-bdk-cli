@@ -38,6 +38,7 @@
     "ora": "^3.4.0",
     "pkg-install": "^1.0.0",
     "replace-in-files": "^2.0.3",
+    "request": "^2.88.0",
     "xml2js": "^0.4.22",
     "yamljs": "^0.3.0"
   },

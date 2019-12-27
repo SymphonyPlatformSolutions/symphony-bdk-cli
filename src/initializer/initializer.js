@@ -1,6 +1,7 @@
 import Listr from 'listr';
 import { projectInstall } from 'pkg-install';
 import chalk from 'chalk';
+import {spinnerError, spinnerStart, spinnerStop} from "../../utils/spinner";
 const execSync = require('child_process').execSync;
 
 export async function initializeExtensionApp() {
@@ -20,11 +21,16 @@ export async function initializeExtensionApp() {
 export async function initializeBotApp() {
   const tasks = new Listr([
     {
-      title: chalk.bold('Installing dependencies'),
+      title: chalk.bold('Ran install dependencies'),
       task: () => {
-        execSync('mvn clean install -DskipTests=true');
+        execSync('mvn clean install -D skipTests=true');
       }
     },
   ]);
-  await tasks.run();
+  spinnerStart(chalk.bold('Installing dependencies'));
+  await tasks.run().then(function () {
+    spinnerStop();
+  }).catch(function (err) {
+    spinnerError(err);
+  });
 }
