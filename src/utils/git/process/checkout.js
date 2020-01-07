@@ -1,5 +1,5 @@
-import {repoPath} from "../../../utils/constants";
-import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
+import {repoPath} from "../../constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../spinner";
 import chalk from "chalk";
 
 const nodegit = require('nodegit');

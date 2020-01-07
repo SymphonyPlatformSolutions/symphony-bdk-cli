@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
-import {repoPath} from "../../../utils/constants";
-import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
+import {repoPath} from "../../constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../spinner";
 import {copyFiles, deleteFolderRecursive, deleteFileSync, getXml, writeXml} from "../utils";
 import ReplaceInFiles from 'replace-in-files';
 import glob from 'glob';
@@ -15,7 +15,7 @@ const getDirectories = (src, callback) => new Promise((resolve) => glob(`${src}/
   resolve(list);
 }));
 
-const basePackage = ['com','symphony','ms','bot'];
+const basePackage = ['com','symphony','ms','bot', 'sdk'];
 
 const processPackageNames = (options, srcFiles, testFiles) => {
   const packageList = options.basePackage.split('.');
@@ -30,6 +30,8 @@ const processPackageNames = (options, srcFiles, testFiles) => {
     const newPathSrc = `${srcFiles}/${newPackages}`;
     const workPathTests = `${testFiles}/${targetPackages}`;
     const newPathTests = `${testFiles}/${newPackages}`;
+    console.log(workPathSrc, newPathSrc)
+    console.log(workPathTests, newPathTests)
     fs.renameSync(workPathSrc, newPathSrc);
     fs.renameSync(workPathTests, newPathTests);
   }
@@ -85,7 +87,7 @@ export async function createBotApp(options) {
   const list = await getDirectories(`${options.targetDirectory}/src`);
   const renamePackageOptions = {
     files: list,
-    from: /com.symphony.ms.bot/g,
+    from: /com.symphony.ms.bot.sdk/g,
     to: `${options.basePackage}.${options.projectName.toLowerCase()}`,
   };
 

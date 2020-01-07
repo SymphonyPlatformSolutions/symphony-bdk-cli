@@ -1,17 +1,17 @@
 import chalk from "chalk";
-import { getAnwsers } from "../questions/ext-app";
-import { gitFlow } from "../git/git";
-import { deleteFolder } from "../files/utils";
+import { getAnwsers } from "./questions";
+import { gitFlow } from "../../utils/git/git";
+import { deleteFolder } from "../../utils/files/utils";
 import { local } from "../../utils/constants";
-import { initializeExtensionApp } from "../initializer/initializer";
-import { extensionAppFilesFlow } from "../files/files";
+import { initializeExtensionApp } from "../../utils/initializer/initializer";
+import { extensionAppFilesFlow } from "../../utils/files/files";
 import fs from 'fs';
 const execSync = require('child_process').execSync;
 
 const repoUrl = "git@github.com:SymphonyPlatformSolutions/sms-dev-fe-template-app.git";
 const repoBranch = 'remotes/origin/develop';
 
-const createExtensionApp = async (options) => {
+export default async (options) => {
   console.log(chalk.bold(
     'This tool will guide you through the process to create an extension app template'
   ));
@@ -30,5 +30,3 @@ const createExtensionApp = async (options) => {
     execSync('yarn start:mock',{stdio: 'inherit'});
   }
 };
-
-export default createExtensionApp;

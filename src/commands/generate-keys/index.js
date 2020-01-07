@@ -1,5 +1,5 @@
-import {getAnwsers} from "../questions/generate-keys";
-import { deleteFileSync, readFileSync } from "../files/utils";
+import {getAnwsers} from "./questions";
+import { deleteFileSync, readFileSync } from "../../utils/files/utils";
 
 const execSync = require('child_process').execSync;
 

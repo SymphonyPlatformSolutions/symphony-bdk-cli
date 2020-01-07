@@ -2,7 +2,7 @@ import chalk from "chalk";
 const commandExistsSync = require('command-exists').sync;
 import { spinnerStart, spinnerError, spinnerStop} from "../../utils/spinner";
 
-const checkDeps = async () => {
+export default async () => {
 
   const checks = [];
   const errorMessages = [];
@@ -56,5 +56,3 @@ const checkDeps = async () => {
   }
   return haveDependencies;
 }
-
-export default checkDeps;

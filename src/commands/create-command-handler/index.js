@@ -2,7 +2,7 @@ import chalk from "chalk";
 import {
   getAnwsers,
   HANDLER_TYPES,
-} from "../questions/create-command-handler";
+} from "./questions";
 import fs from 'fs';
 import ReplaceInFiles from 'replace-in-files';
 import {
@@ -10,11 +10,11 @@ import {
   addNewCommandToHelp,
   customSymphonyElementsHandler,
   customSymphonyElementsTemplate,
-} from "../assets/command-handler";
+} from "./templates";
 import { spinnerStart, spinnerError, spinnerStop} from "../../utils/spinner";
-import {getXml} from "../files/utils";
+import {getXml} from "../../utils/files/utils";
 
-const createCommandHandler = async (options) => {
+export default async (options) => {
   console.log(chalk.bold(
     'This Tool will guide you through the process of adding a new bot command'
   ));
@@ -59,5 +59,3 @@ const createCommandHandler = async (options) => {
     console.log(chalk.bold('please mare sure you`re within an bot folder, error: ', e));
   }
 };
-
-export default createCommandHandler;

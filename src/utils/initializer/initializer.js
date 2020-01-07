@@ -1,7 +1,7 @@
 import Listr from 'listr';
 import { projectInstall } from 'pkg-install';
 import chalk from 'chalk';
-import {spinnerError, spinnerStart, spinnerStop} from "../../utils/spinner";
+import {spinnerError, spinnerStart, spinnerStop} from "../spinner";
 const execSync = require('child_process').execSync;
 
 export async function initializeExtensionApp() {
