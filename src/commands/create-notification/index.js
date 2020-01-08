@@ -3,7 +3,7 @@ import {
   getAnwsers,
   NOTIFICATION_CUSTOM_OPTIONS, NOTIFICATION_FINANCIAL_ELEMENTS_OPTIONS,
   NOTIFICATION_TEMPLATE_OPTIONS,
-} from "../questions/create-notification";
+} from "./questions";
 import fs from 'fs';
 import ReplaceInFiles from 'replace-in-files';
 import {
@@ -38,7 +38,7 @@ import {
   rfqConfirmedHbsTemplate,
   rfqPassedHbsTemplate,
   rfqTimeoutHbsTemplate,
-} from "../assets/notifications";
+} from "./templates";
 import {
   rfqInitiatedTemplateEntity,
   rfqInitiatedTemplateEnricher,
@@ -54,7 +54,7 @@ import {
   rfqTimeoutTemplateEnricher,
   rfqPassedTemplateEntity,
   rfqPassedTemplateEnricher,
-} from '../assets/financial-notifications';
+} from './financial-notifications';
 import { spinnerStart, spinnerError, spinnerStop} from "../../utils/spinner";
 
 const getFiles = (extAppPath) => {
@@ -65,7 +65,7 @@ const getFiles = (extAppPath) => {
   ];
 };
 
-const createNotification = async (options) => {
+export default async (options) => {
   console.log(chalk.bold(
     'This tool will guide you through the process of adding a new notification'
   ));
@@ -255,5 +255,3 @@ const createNotification = async (options) => {
     console.log(chalk.bold('please mare sure you`re within an extension app folder, error: ', e));
   }
 };
-
-export default createNotification;

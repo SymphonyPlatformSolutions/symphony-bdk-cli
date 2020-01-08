@@ -1,4 +1,4 @@
-import {local} from "../../../utils/constants";
+import {local} from "../../constants";
 const fs = require('fs');
 const path = require('path');
 

@@ -1,9 +1,10 @@
 import chalk from 'chalk';
 import fs from 'fs';
+import fsExtra from 'fs-extra';
 import path from 'path';
 import { promisify } from 'util';
-import {repoPath} from "../../../utils/constants";
-import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
+import {repoPath} from "../../constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../spinner";
 import {copyFiles, deleteFolderRecursive, deleteFileSync, getXml, writeXml} from "../utils";
 import ReplaceInFiles from 'replace-in-files';
 import glob from 'glob';
@@ -15,24 +16,24 @@ const getDirectories = (src, callback) => new Promise((resolve) => glob(`${src}/
   resolve(list);
 }));
 
-const basePackage = ['com','symphony','ms','bot'];
+const basePackage = ['com','symphony','ms','bot', 'sdk'];
+
+const tmpSrcFolder = './.tmpMoveSrc';
+const tmpTestSrcFolder = './.tmpTestMoveSrc';
 
 const processPackageNames = (options, srcFiles, testFiles) => {
-  const packageList = options.basePackage.split('.');
+  const packageList = options.basePackage.split('.').filter(elem => elem.length);
   packageList.push(options.projectName.toLowerCase());
-
-  for (let i = packageList.length; i > 0 ; i--) {
-    const targetPackages = basePackage.slice(0,i).join('/');
-    let newPackages = basePackage.slice(0,i-1);
-    newPackages.push(packageList[i-1]);
-    newPackages = newPackages.join('/');
-    const workPathSrc = `${srcFiles}/${targetPackages}`;
-    const newPathSrc = `${srcFiles}/${newPackages}`;
-    const workPathTests = `${testFiles}/${targetPackages}`;
-    const newPathTests = `${testFiles}/${newPackages}`;
-    fs.renameSync(workPathSrc, newPathSrc);
-    fs.renameSync(workPathTests, newPathTests);
-  }
+  const srcCodeBasePath = `${srcFiles}/${basePackage.join('/')}`;
+  const testSrcDodeBasePath = `${testFiles}/${basePackage.join('/')}`;
+  fsExtra.copySync(srcCodeBasePath, tmpSrcFolder);
+  fsExtra.copySync(testSrcDodeBasePath, tmpTestSrcFolder);
+  fsExtra.removeSync(`${srcFiles}/com`);
+  fsExtra.removeSync(`${testFiles}/com`);
+  fsExtra.copySync(tmpSrcFolder, `${srcFiles}/${packageList.join('/')}`);
+  fsExtra.copySync(tmpTestSrcFolder, `${testFiles}/${packageList.join('/')}`);
+  fsExtra.removeSync(tmpSrcFolder);
+  fsExtra.removeSync(tmpTestSrcFolder);
 };
 
 export async function createExtensionApp(options) {
@@ -85,7 +86,7 @@ export async function createBotApp(options) {
   const list = await getDirectories(`${options.targetDirectory}/src`);
   const renamePackageOptions = {
     files: list,
-    from: /com.symphony.ms.bot/g,
+    from: /com.symphony.ms.bot.sdk/g,
     to: `${options.basePackage}.${options.projectName.toLowerCase()}`,
   };
 

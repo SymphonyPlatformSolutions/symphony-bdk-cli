@@ -33,21 +33,29 @@ public class ${commandName}CommandHandler extends CommandHandler {
 }
 `;
 
-export const customSymphonyElementsHandler = (basePackage, commandName, formId) => `package ${basePackage}.elements;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
+export const customSymphonyElementsHandler = (basePackage, commandName, commandNameKebabCased) => `package ${basePackage}.elements;
 
 import ${basePackage}.internal.command.model.BotCommand;
 import ${basePackage}.internal.elements.ElementsHandler;
 import ${basePackage}.internal.event.model.SymphonyElementsEvent;
 import ${basePackage}.internal.message.model.SymphonyMessage;
 
-public class ${commandName}Handler extends ElementsHandler {
-  private static final String FORM_ID = "${formId}";
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
+/**
+ * Sample code. Implementation of {@link ElementsHandler} which renders a Symphony elements form and
+ * handles its submission.
+ */
+public class ${commandName}Handler extends ElementsHandler {
+  private static final String FORM_ID = "${commandNameKebabCased}";
+
+  /**
+   * Used by CommandFilter to filter Symphony chat messages
+   */
   @Override
   protected Predicate<String> getCommandMatcher() {
     return Pattern
@@ -60,24 +68,30 @@ public class ${commandName}Handler extends ElementsHandler {
     return FORM_ID;
   }
 
+  /**
+   * Invoked when command matches
+   */
   @Override
   public void displayElements(BotCommand command,
       SymphonyMessage elementsResponse) {
     Map<String, String> data = new HashMap<>();
     data.put("form_id", FORM_ID);
-    elementsResponse.setTemplateFile("${commandName.toLowerCase()}.ftl", data);
+    elementsResponse.setTemplateFile("${commandNameKebabCased}", data);
   }
 
+  /**
+   * Invoked when elements form is submitted
+   */
   @Override
   public void handleAction(SymphonyElementsEvent event,
       SymphonyMessage elementsResponse) {
-    elementsResponse.setMessage("Received and treated the form response!");
+    elementsResponse.setMessage("Form registered successfully");
   }
 
 }`;
 
-export const customSymphonyElementsTemplate = `<form id="\$\{form_id\}">
-  <h3>Sample form</h3>
+export const customSymphonyElementsTemplate = `<form id="{{form_id}}">
+  <h3>Quote Registration</h3>
   <h6>From currency</h6>
   <text-field minlength="3" maxlength="3" masked="false" name="fromCurrency" required="true"></text-field>
   <h6>To currency</h6>

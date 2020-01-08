@@ -1,6 +1,6 @@
 'use strict';
 
-import {local} from "../../../utils/constants";
+import {local} from "../../constants";
 import {readFileToJsonObject} from "../utils";
 const fs = require('fs');
 const path = require('path');

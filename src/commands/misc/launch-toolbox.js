@@ -1,6 +1,6 @@
 const execSync = require('child_process').execSync;
 import chalk from "chalk";
-import {gitFlow} from "../git/git";
+import {gitFlow} from "../../utils/git/git";
 import mkdirp from 'mkdirp';
 import fs from 'fs';
 import {spinnerStart, spinnerStop} from "../../utils/spinner";

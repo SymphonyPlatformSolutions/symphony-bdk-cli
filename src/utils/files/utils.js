@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import {spinnerStart, spinnerStop} from "../../utils/spinner";
+import {spinnerStart, spinnerStop} from "../spinner";
 import {promisify} from "util";
 import ncp from 'ncp';
 import { parseString, Builder } from 'xml2js';

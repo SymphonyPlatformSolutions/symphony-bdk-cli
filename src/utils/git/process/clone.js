@@ -1,7 +1,7 @@
 'use strict';
 import chalk from "chalk";
-import {local} from "../../../utils/constants";
-import {spinnerError, spinnerStart, spinnerStop} from "../../../utils/spinner";
+import {local} from "../../constants";
+import {spinnerError, spinnerStart, spinnerStop} from "../../spinner";
 
 const os = require('os');
 const nodegit = require('nodegit');

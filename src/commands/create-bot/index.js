@@ -1,19 +1,19 @@
-import {generateBotKeys} from "./generate-keys";
+import {generateBotKeys} from "../generate-keys";
 
 const execSync = require('child_process').execSync;
 import chalk from "chalk";
-import { getAnwsers } from "../questions/create-bot";
-import {gitFlow} from "../git/git";
-import {deleteFolder} from "../files/utils";
+import { getAnwsers } from "./questions";
+import {gitFlow} from "../../utils/git/git";
+import {deleteFolder} from "../../utils/files/utils";
 import {local} from "../../utils/constants";
-import {initializeBotApp} from "../initializer/initializer";
-import {botFilesFlow} from "../files/files";
+import {initializeBotApp} from "../../utils/initializer/initializer";
+import {botFilesFlow} from "../../utils/files/files";
 import fs from 'fs';
 
 const repoUrl = "git@github.com:SymphonyPlatformSolutions/sms-bot-sdk.git";
 const repoBranch = 'refs/remotes/origin/develop';
 
-const createBot = async (options) => {
+export default async (options) => {
   console.log(chalk.bold('Setting up a new Bot application'));
   const awnsers = await getAnwsers(options);
   const targetFolder = `${options.cwd}/${awnsers.projectName}`;
@@ -38,5 +38,3 @@ const createBot = async (options) => {
     execSync('mvn spring-boot:run',{stdio: 'inherit'});
   }
 };
-
-export default createBot;

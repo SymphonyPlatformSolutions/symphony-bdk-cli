@@ -2,7 +2,7 @@ import chalk from "chalk";
 import {
   getAnwsers,
   HANDLER_TYPES,
-} from "../questions/create-command-handler";
+} from "./questions";
 import fs from 'fs';
 import ReplaceInFiles from 'replace-in-files';
 import {
@@ -10,11 +10,12 @@ import {
   addNewCommandToHelp,
   customSymphonyElementsHandler,
   customSymphonyElementsTemplate,
-} from "../assets/command-handler";
+} from "./templates";
 import { spinnerStart, spinnerError, spinnerStop} from "../../utils/spinner";
-import {getXml} from "../files/utils";
+import { getXml } from "../../utils/files/utils";
+import { toKebabCase } from "../../utils/helper";
 
-const createCommandHandler = async (options) => {
+export default async (options) => {
   console.log(chalk.bold(
     'This Tool will guide you through the process of adding a new bot command'
   ));
@@ -38,8 +39,8 @@ const createCommandHandler = async (options) => {
       const genericTemplate = genericCommandHandler(javaBasePackage, awnsers.commandName);
       fs.writeFileSync(botCommandHandlerRootPath, genericTemplate);
     } else {
-      const templatePath = `${botTemplatesRootPath}/${awnsers.commandName.toLowerCase()}.ftl`;
-      const symphElementsHandler = customSymphonyElementsHandler(javaBasePackage, awnsers.commandName, awnsers.formId);
+      const templatePath = `${botTemplatesRootPath}/${toKebabCase(awnsers.commandName)}.hbs`;
+      const symphElementsHandler = customSymphonyElementsHandler(javaBasePackage, awnsers.commandName, toKebabCase(awnsers.commandName), awnsers.formId);
       const elementsTemplate = customSymphonyElementsTemplate;
       fs.writeFileSync(botSymphonyElementsCommandHandlerPath, symphElementsHandler);
       fs.writeFileSync(templatePath, elementsTemplate);
@@ -54,10 +55,9 @@ const createCommandHandler = async (options) => {
     await ReplaceInFiles(helpCommand);
 
     spinnerStop(chalk.bold('New command handler  ') + chalk.green.bold('Installed'));
+    console.log(chalk.green.bold('Please restart the bot to see the changes in effect'));
   }catch (e) {
     spinnerError('Error');
     console.log(chalk.bold('please mare sure you`re within an bot folder, error: ', e));
   }
 };
-
-export default createCommandHandler;

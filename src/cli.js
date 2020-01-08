@@ -1,10 +1,10 @@
-import {COMMANDS, TEMPLATE_COMMANDS, getCommands} from "./commands/commands";
+import {COMMANDS, TEMPLATE_COMMANDS, getCommands} from "./commands";
 import createExtensionApp from "./commands/create-ext-app";
 import createBot from "./commands/create-bot";
 import generateKeys from "./commands/generate-keys";
 import checkDeps from "./commands/check-deps";
 import path from 'path';
-import launchToolbox from "./commands/launch-toolbox";
+import launchToolbox from "./commands/misc/launch-toolbox";
 import fs from 'fs';
 import createNotification from "./commands/create-notification";
 import createCommandHandler from "./commands/create-command-handler";
@@ -23,9 +23,9 @@ const init = async (args) => {
     case COMMANDS.CREATE_EXT_APP:
 
       if (options.app === true) {
-        createExtensionApp(options);
+        await createExtensionApp(options);
       } else if(options.app === TEMPLATE_COMMANDS.NOTIFICATION) {
-        createNotification(options);
+        await createNotification(options);
       } else {
         options.program.outputHelp();
       }
@@ -33,22 +33,22 @@ const init = async (args) => {
       break;
     case COMMANDS.CREATE_BOT:
       if (options.bot === true) {
-        createBot(options);
+        await createBot(options);
       } else if(options.bot === TEMPLATE_COMMANDS.HANDLER) {
-        createCommandHandler(options);
+        await createCommandHandler(options);
       } else {
         options.program.outputHelp();
       }
       break;
     case COMMANDS.CREATE_CERTIFICATE:
-      generateKeys(options);
+      await generateKeys(options);
       break;
       case COMMANDS.CHECK_DEPS:
-      checkDeps(options);
+      await checkDeps(options);
       break;
     case COMMANDS.TOOLBOX:
-      checkDeps(options);
-      launchToolbox();
+      await checkDeps(options);
+      await launchToolbox();
       break;
     default:
       options.program.outputHelp();
