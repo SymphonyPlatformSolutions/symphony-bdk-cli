@@ -1,6 +1,6 @@
 export const notEmpty = (value) => value && value.length > 0;
 
-export const validJavaPackage = (value) => value && value.length > 0 && value.indexOf(' ') <= 0 && value.split('.').length === 4;
+export const validJavaPackage = (value) => value && value.length > 0 && value.indexOf(' ') <= 0;
 
 export const isUpperCase = (str) => {
   if (!str || !str.length) {

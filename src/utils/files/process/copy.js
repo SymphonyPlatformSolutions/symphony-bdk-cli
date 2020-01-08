@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import fs from 'fs';
+import fsExtra from 'fs-extra';
 import path from 'path';
 import { promisify } from 'util';
 import {repoPath} from "../../constants";
@@ -17,24 +18,22 @@ const getDirectories = (src, callback) => new Promise((resolve) => glob(`${src}/
 
 const basePackage = ['com','symphony','ms','bot', 'sdk'];
 
-const processPackageNames = (options, srcFiles, testFiles) => {
-  const packageList = options.basePackage.split('.');
-  packageList.push(options.projectName.toLowerCase());
+const tmpSrcFolder = './.tmpMoveSrc';
+const tmpTestSrcFolder = './.tmpTestMoveSrc';
 
-  for (let i = packageList.length; i > 0 ; i--) {
-    const targetPackages = basePackage.slice(0,i).join('/');
-    let newPackages = basePackage.slice(0,i-1);
-    newPackages.push(packageList[i-1]);
-    newPackages = newPackages.join('/');
-    const workPathSrc = `${srcFiles}/${targetPackages}`;
-    const newPathSrc = `${srcFiles}/${newPackages}`;
-    const workPathTests = `${testFiles}/${targetPackages}`;
-    const newPathTests = `${testFiles}/${newPackages}`;
-    console.log(workPathSrc, newPathSrc)
-    console.log(workPathTests, newPathTests)
-    fs.renameSync(workPathSrc, newPathSrc);
-    fs.renameSync(workPathTests, newPathTests);
-  }
+const processPackageNames = (options, srcFiles, testFiles) => {
+  const packageList = options.basePackage.split('.').filter(elem => elem.length);
+  packageList.push(options.projectName.toLowerCase());
+  const srcCodeBasePath = `${srcFiles}/${basePackage.join('/')}`;
+  const testSrcDodeBasePath = `${testFiles}/${basePackage.join('/')}`;
+  fsExtra.copySync(srcCodeBasePath, tmpSrcFolder);
+  fsExtra.copySync(testSrcDodeBasePath, tmpTestSrcFolder);
+  fsExtra.removeSync(`${srcFiles}/com`);
+  fsExtra.removeSync(`${testFiles}/com`);
+  fsExtra.copySync(tmpSrcFolder, `${srcFiles}/${packageList.join('/')}`);
+  fsExtra.copySync(tmpTestSrcFolder, `${testFiles}/${packageList.join('/')}`);
+  fsExtra.removeSync(tmpSrcFolder);
+  fsExtra.removeSync(tmpTestSrcFolder);
 };
 
 export async function createExtensionApp(options) {
