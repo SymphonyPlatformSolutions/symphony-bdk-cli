@@ -13,6 +13,10 @@ const getConfigString = (options) => {
         value: \`https://\${window.location.host}/${options.appId.toLowerCase()}\`,
         writable: false,
       },
+      API_EXT_URL: {
+        value: 'http://localhost:8080/${options.backendId.toLowerCase()}',
+        writable: false,
+      },
       LINK_PREFIX: {
         value: '/${options.appId.toLowerCase()}/app',
         writable: false,

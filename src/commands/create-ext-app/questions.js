@@ -32,7 +32,15 @@ async function promptForMissingOptions(options) {
     });
   }
 
-    if (!options.description) {
+  if (!options.backendId) {
+    questions.push({
+      name: 'backendId',
+      message: 'For running the app connected to the Backend, what\'s the backend ID?',
+      default: 'template',
+    });
+  }
+  
+  if (!options.description) {
     questions.push({
       name: 'description',
       message: 'Please give a brief description of this extension app',
@@ -47,6 +55,7 @@ async function promptForMissingOptions(options) {
     appId: options.appId || answers.appId,
     publisher: options.publisher || answers.publisher,
     description: options.description || answers.description,
+    backendId: options.backendId || answers.backendId,
   };
 }
 
