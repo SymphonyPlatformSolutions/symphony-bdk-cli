@@ -30,7 +30,7 @@ export default async (options) => {
     const basePackage = parsedData.project.groupId[0];
     const artifactId = parsedData.project.artifactId[0].toLowerCase();
     const javaBasePackage = `${basePackage}.${artifactId}`;
-    const botHelpCommandHandlerPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/command/HelpCommandHandler.java`;
+    const botHelpCommandHandlerPath = `${botRoot}/src/main/resources/templates/help-response.hbs`;
     const botCommandHandlerRootPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/command/${awnsers.commandName}CommandHandler.java`;
     const botSymphonyElementsCommandHandlerPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/elements/${awnsers.commandName}Handler.java`;
     const botTemplatesRootPath = `${botRoot}/src/main/resources/templates`;
@@ -48,7 +48,7 @@ export default async (options) => {
 
     const helpCommand = {
       files: [ botHelpCommandHandlerPath ],
-      from: new RegExp(/\/login \- returns the HTTP authorization header required to talk to external system\"\,/),
+      from: new RegExp(/<\/ul>/),
       to: addNewCommandToHelp(awnsers.commandName),
     };
 
