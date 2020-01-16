@@ -1,5 +1,5 @@
-export const addNewCommandToHelp = (commandName) => `/login - returns the HTTP authorization header required to talk to external system",
-        botMention + " /${commandName.toLowerCase()} - auto generated command, please insert description",`;
+export const addNewCommandToHelp = (commandName) => `  <li><b>{{bot_mention}}</b> /${commandName.toLowerCase()} - auto generated command, please insert description</li>
+</ul>`;
 
 export const genericCommandHandler = (basePackage, commandName) => `package ${basePackage}.command;
 
