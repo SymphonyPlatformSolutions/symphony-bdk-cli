@@ -1,7 +1,10 @@
 # SMS SDK CLI
 
 ![Alt text](src/assets/logo-symphony.png?raw=true "Mock client architecture")
+
 [![CircleCI](https://circleci.com/gh/SymphonyPlatformSolutions/sms-sdk-cli.svg?style=shield&circle-token=f85a6240aca3c3dca3599620bf3688a458b389c8)](https://circleci.com/gh/SymphonyPlatformSolutions/sms-sdk-cli/tree/develop)
+[![Generic badge](https://img.shields.io/badge/Node-v12.14.1-blue.svg)](https://www.oracle.com/technetwork/java/javase/documentation/index.html)
+[![Generic badge](https://img.shields.io/badge/Npm-6.13.4-blue.svg)](https://www.oracle.com/technetwork/java/javase/documentation/index.html)
 
 ## Description
 
@@ -15,14 +18,14 @@ and facilitate the creation of the above.
 * NodeJS
 * Yarn
 * Openssl
-* Node
+* Node v12.14.1
 * Java 8
 * Maven
 * Git
 
 ## Preparing Environment
 
-- First you need to install the stable version of [NodeJs](https://nodejs.org/en/)
+- First you need to install the **stable** version of [NodeJs](https://nodejs.org/en/) 
 - Then you need to install yarn ```npm install -g yarn```
 - Then you'll need to link this tool, by running ```yarn link``` inside the sms-sdk-cli folder
 > this step is momentarily, as soon as this project gets release under a registry repository
@@ -44,7 +47,8 @@ directions to the depedencies download page.
 
 ### Git
 Be sure to have generated proper ssh keys on your machine and added them to your 
-symphony`s github account. you can found how to do that [here](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+symphony`s github account. you can found how to do that
+[here](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 The CLI will look for these files:
 ```
 ~/.ssh/id_rsa
@@ -57,7 +61,6 @@ If they're not present you'll be prompted with error messages.
 
 At this time the CLI has 7 commands, the only mandatory field on these commands
 if required is the project name. these commands being:
-
 * ```sms-sdk-cli --app``` which creates an extension app (React)
 * ```sms-sdk-cli --app message-template``` Creates a notification in a existing extension app.
 * ```sms-sdk-cli --bot``` which creates an bot app (Java)
