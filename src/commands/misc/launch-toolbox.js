@@ -29,11 +29,11 @@ const launchToolbox = async (options) => {
        process.chdir('../');
        console.log(chalk.bold('Getting Latest Toolbox ui'));
        await gitFlow(repoUrl, repoBranch);
-      process.chdir(toolboxPath);
+       process.chdir(toolboxPath);
        console.log(chalk.bold('Installing dependencies'));
-      execSync('yarn', {stdio: 'inherit'});
-      spinnerStop('Launching Toolbox!');
-      execSync('yarn storybook',{stdio: 'inherit'});
+        execSync('yarn', {stdio: 'inherit'});
+        spinnerStop('Launching Toolbox!');
+        execSync('yarn storybook',{stdio: 'inherit'});
     }
 };
 

@@ -76,9 +76,9 @@
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
 "@types/node@*":
-  version "13.1.8"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.1.8.tgz#1d590429fe8187a02707720ecf38a6fe46ce294b"
-  integrity sha512-6XzyyNM9EKQW4HKuzbo/CkOIjn/evtCmsU+MUM1xDfJ+3/rNjBttM1NgN7AOQvN6tP1Sl1D1PIKMreTArnxM9A==
+  version "13.5.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.5.0.tgz#4e498dbf355795a611a87ae5ef811a8660d42662"
+  integrity sha512-Onhn+z72D2O2Pb2ql2xukJ55rglumsVo1H6Fmyi8mlU9SvKdBk/pUSUAiBY/d9bAOF7VVWajX3sths/+g6ZiAQ==
 
 "@types/node@^11.9.4":
   version "11.15.4"
@@ -1299,10 +1299,10 @@ nodegit-promise@~4.0.0:
   dependencies:
     asap "~2.0.3"
 
-nodegit@^0.26.1:
-  version "0.26.4"
-  resolved "https://registry.yarnpkg.com/nodegit/-/nodegit-0.26.4.tgz#047bde88d35b3f1f1872ad1a1a3cafb37b05c64b"
-  integrity sha512-HbGdk6zqI+3u3HhRLoOigut/Ns0Bm04WL0JPwsxJKalvpihOevrdTj7461wofANu/Vn5sdaq//VpeHLZTJQrlQ==
+nodegit@0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/nodegit/-/nodegit-0.26.1.tgz#2fc97ea69b186143ba2f469489d555ded1cdbb01"
+  integrity sha512-ZNky4TMBob4ld2eWyfwjlhsaY8H5vniDtW7ENy6TbfIF40D844uDLdJ+JAf++6lENKBPPClKvGza8h0ohN0IZg==
   dependencies:
     fs-extra "^7.0.0"
     json5 "^2.1.0"
