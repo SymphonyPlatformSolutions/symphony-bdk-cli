@@ -15,7 +15,7 @@ export const checkoutBranch = async (branch) => {
 
   }catch (e) {
     spinnerError('Error while getting access to the required dependencies');
-    reject(new Error('Error while getting access to the required dependencies'));
+    throw new Error(e);
   }
 
   spinnerStop(chalk.green.bold('Checked'));

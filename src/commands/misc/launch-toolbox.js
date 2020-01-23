@@ -1,3 +1,5 @@
+import {deleteFolderRecursive} from "../../utils/files/utils";
+
 const execSync = require('child_process').execSync;
 import chalk from "chalk";
 import {gitFlow} from "../../utils/git/git";
@@ -14,6 +16,7 @@ const toolboxPath = `${cliFolderPath}/.tmp`;
 
 const launchToolbox = async (options) => {
   spinnerStart('Launching latest toolbox-ui Library\n');
+  deleteFolderRecursive(toolboxPath);
   mkdirp.sync(toolboxPath);
   process.chdir(toolboxPath);
 
