@@ -28,6 +28,12 @@ export default async () => {
   });
 
   checks.push({
+    dependency: () => commandExistsSync('git'),
+    errorMessage: 'Git needs to be installed, in its latest version, please run:',
+    downloadLink: 'https://git-scm.com/downloads',
+  });
+
+  checks.push({
     dependency: () => commandExistsSync('java'),
     errorMessage: 'JDK needs to be installed version 8 or later. vist the Java website:',
     downloadLink: '(https://www.oracle.com/technetwork/pt/java/javase/downloads/index.html)',
