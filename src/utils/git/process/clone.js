@@ -1,40 +1,25 @@
 'use strict';
 import chalk from "chalk";
-import {local} from "../../constants";
 import {spinnerError, spinnerStart, spinnerStop} from "../../spinner";
+import download from 'download-git-repo';
 
-const os = require('os');
-const nodegit = require('nodegit');
-const path = require('path');
-
-const userName = "git";
-const certPath = `${os.homedir()}/.ssh/`;
-
-var pubPath = path.join(certPath, 'id_rsa.pub');
-var privPath = path.join(certPath, 'id_rsa');
-
-var cred = nodegit.Cred.sshKeyNew(
-  userName,
-  pubPath,
-  privPath,
-  '');
-
-var cloneOpts = {
-  fetchOpts: {
-    callbacks: {
-      credentials: function () {
-        return cred;
-      }
-    }
-  }
-};
-
-export async function getTemplateProject(repoUrl) {
+export async function getTemplateProject(repoUrl, absoluteTargetFolder) {
   spinnerStart(chalk.bold('Getting latest boilerplate application'));
-  return await nodegit.Clone(repoUrl, local, cloneOpts).then(function (repo) {
-    spinnerStop(chalk.bold('Boilerplate ') + chalk.green.bold("accessed"));
-  }).catch(function (err) {
-    console.log(err);
-    spinnerError(err);
-  });
+  try {
+    await new Promise((Resolve, Reject) => {
+      download(repoUrl, absoluteTargetFolder, { clone: true }, function (err) {
+      if (err) {
+        console.log(err);
+        spinnerError(err);
+        Reject(err)
+      } else {
+        spinnerStop(chalk.bold('Boilerplate ') + chalk.green.bold("accessed"));
+        Resolve();
+      }
+    })
+    });
+  }
+  catch(e) {
+    throw new Error(e);
+  }
 }

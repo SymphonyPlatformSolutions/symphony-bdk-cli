@@ -1,9 +1,4 @@
-import {local} from "../../constants";
 const fs = require('fs');
-const path = require('path');
-
-const configPath = path.join(local, '/extension-app/public/config.js');
-const bundlePath = path.join(local, '/extension-app/public/bundle.json');
 
 const getConfigString = (options) => {
   return `const APP_CONFIG = {};
@@ -46,7 +41,10 @@ const getConfigString = (options) => {
   window.APP_CONFIG = APP_CONFIG;`
 };
 
-export const writeConfigFile = (options) => {
+export const writeConfigFile = (options, targetFolder) => {
+  const configPath = `${targetFolder}/extension-app/public/config.js`;
+  const bundlePath = `${targetFolder}/extension-app/public/bundle.json`;
+
   fs.writeFileSync(configPath, getConfigString(options), function (err) {
     if (err) {
       return console.log(err);

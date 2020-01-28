@@ -1,16 +1,12 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
-import path from 'path';
 import { promisify } from 'util';
-import {repoPath} from "../../constants";
-import {spinnerError, spinnerStart, spinnerStop} from "../../spinner";
-import {copyFiles, deleteFolderRecursive, deleteFileSync, getXml, writeXml} from "../utils";
+import { spinnerStart, spinnerStop } from "../../spinner";
+import {deleteFolderRecursive, deleteFileSync, getXml, writeXml} from "../utils";
 import ReplaceInFiles from 'replace-in-files';
 import glob from 'glob';
 import YAML from 'yamljs';
-
-const access = promisify(fs.access);
 
 const getDirectories = (src, callback) => new Promise((resolve) => glob(`${src}/**/*`,(error, list) => {
   resolve(list);
@@ -36,30 +32,6 @@ const processPackageNames = (options, srcFiles, testFiles) => {
   fsExtra.removeSync(tmpTestSrcFolder);
 };
 
-export async function createExtensionApp(options) {
-  spinnerStart(chalk.bold('Moving bits and bytes'));
-  options = {
-    ...options,
-    targetDirectory: process.cwd(),
-  };
-
-  const templateDir = path.resolve(repoPath);
-  options.templateDirectory = templateDir;
-
-  try {
-    await access(templateDir, fs.constants.R_OK);
-  } catch (err) {
-    spinnerError('%s Invalid boilerplate name', chalk.red.bold('ERROR'));
-    process.exit(1);
-  }
-
-  await copyFiles(options.templateDirectory, options.targetDirectory);
-  deleteFolderRecursive(`${options.targetDirectory}/.git`);
-  deleteFileSync(`${options.targetDirectory}/.gitignore`);
-  spinnerStop(chalk.bold('Files ') + chalk.green.bold('Installed'));
-  return true;
-}
-
 export async function createBotApp(options) {
   spinnerStart(chalk.bold('Moving bits and bytes'));
   options = {
@@ -67,20 +39,9 @@ export async function createBotApp(options) {
     targetDirectory: process.cwd(),
   };
 
-  const templateDir = path.resolve(repoPath);
-  options.templateDirectory = templateDir;
-
   const botJavaFilesPath = `${options.targetDirectory}/src/main/java`;
   const botJavaTestsPath = `${options.targetDirectory}/src/test/java`;
-
-  try {
-    await access(templateDir, fs.constants.R_OK);
-  } catch (err) {
-    spinnerError('%s Invalid boilerplate name', chalk.red.bold('ERROR'));
-    process.exit(1);
-  }
-
-  await copyFiles(options.templateDirectory, options.targetDirectory);
+  console.log(botJavaFilesPath, botJavaTestsPath);
 
   processPackageNames(options, botJavaFilesPath, botJavaTestsPath);
   const list = await getDirectories(`${options.targetDirectory}/src`);

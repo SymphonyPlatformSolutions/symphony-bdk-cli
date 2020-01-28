@@ -1,13 +1,10 @@
 'use strict';
 
-import {local} from "../../constants";
 import {readFileToJsonObject} from "../utils";
 const fs = require('fs');
-const path = require('path');
 
-const packageJsonPath = path.join(local, 'package.json');
-
-export const updatePackageJson = (options) => {
+export const updatePackageJson = (options, targetFolder) => {
+  const packageJsonPath = `${targetFolder}/package.json`;
   let packageJson = readFileToJsonObject(packageJsonPath);
   packageJson.name = (options.projectName||'');
   packageJson.description = (options.description||'New extension app');
