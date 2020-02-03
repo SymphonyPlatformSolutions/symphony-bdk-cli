@@ -8,6 +8,8 @@ import launchToolbox from "./commands/misc/launch-toolbox";
 import fs from 'fs';
 import createNotification from "./commands/create-notification";
 import createCommandHandler from "./commands/create-command-handler";
+import chalk from "chalk";
+
 
 const terminalImage = require('terminal-image');
 
@@ -19,7 +21,8 @@ const init = async (args) => {
   if (!checkDeps(options)) {
     return;
   }
-  switch (options.command) {
+  try {
+      switch (options.command) {
     case COMMANDS.CREATE_EXT_APP:
 
       if (options.app === true) {
@@ -53,6 +56,9 @@ const init = async (args) => {
     default:
       options.program.outputHelp();
       break;
+  }
+  } catch (e) {
+    console.log(chalk.bgRed.white(e.message));
   }
 };
 

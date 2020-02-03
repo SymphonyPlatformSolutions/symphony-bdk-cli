@@ -14,7 +14,13 @@ export default async (options) => {
   ));
   const awnsers = await getAnwsers(options);
   const targetFolder = `${options.cwd}/${awnsers.projectName}`;
-  fs.existsSync(targetFolder) || fs.mkdirSync(targetFolder);
+
+  if(fs.existsSync(targetFolder)) {
+    throw new Error(new Error('There\'s a Project with that name in this folder, either choose a new name or remove the existing one.'));
+  } else {
+    fs.mkdirSync(targetFolder);
+  }
+
   process.chdir(targetFolder);
   await gitFlow(repoUrl, targetFolder);
   await extensionAppFilesFlow(awnsers, targetFolder);
