@@ -51,6 +51,7 @@ import java.util.regex.Pattern;
  * handles its submission.
  */
 public class ${commandName}Handler extends ElementsHandler {
+  private static final String SAMPLE_INPUT_ID = "sampleInput";
   private static final String FORM_ID = "${commandNameKebabCased}";
 
   /**
@@ -85,29 +86,18 @@ public class ${commandName}Handler extends ElementsHandler {
   @Override
   public void handleAction(SymphonyElementsEvent event,
       SymphonyMessage elementsResponse) {
-    elementsResponse.setMessage("Form registered successfully");
+    Map<String, Object> formValues = event.getFormValues();
+    String response = formValues.get(SAMPLE_INPUT_ID).toString();
+    elementsResponse.setMessage("Form registered successfully, here's what you've typed: "+ response);
   }
 
 }`;
 
 export const customSymphonyElementsTemplate = `<form id="{{form_id}}">
-  <h3>Quote Registration</h3>
-  <h6>From currency</h6>
-  <text-field minlength="3" maxlength="3" masked="false" name="fromCurrency" required="true"></text-field>
-  <h6>To currency</h6>
-  <text-field minlength="3" maxlength="3" masked="false" name="toCurrency" required="true"></text-field>
-  <h6>Amount</h6>
-  <text-field minlength="1" maxlength="9" masked="false" name="amount" required="true"></text-field>
-  <h6>Assigned To:</h6>
-  <person-selector name="assignedTo" placeholder="Assign to.." required="false" />
-  <h6>Quote Status:</h6>
-  <radio name="status" checked="true" value="pending">Pending</radio>
-  <radio name="status" checked="false" value="confirmed">Confirmed</radio>
-  <radio name="status" checked="false" value="settled">Settled</radio>
-  <h6>Remarks:</h6>
-  <textarea name="remarks" placeholder="Enter your remarks.." required="false"></textarea>
+  <h3>Symphony Elements</h3>
+  <h6>This is a sample form using Symphony Elements. Fill in the field and click Confirm, the Bot will receive the data and will reply to you.</h6>
+  <text-field minlength="3" maxlength="100" masked="false" name="sampleInput" required="true"></text-field>
   <button name="confirm" type="action">Confirm</button>
-  <button name="reset" type="reset">Reset</button>
 </form>
 `;
 
