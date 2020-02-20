@@ -39,7 +39,7 @@ export const customSymphonyElementsHandler = (basePackage, commandName, commandN
 import ${basePackage}.internal.command.model.BotCommand;
 import ${basePackage}.internal.elements.ElementsHandler;
 import ${basePackage}.internal.event.model.SymphonyElementsEvent;
-import ${basePackage}.internal.message.model.SymphonyMessage;
+import ${basePackage}.internal.symphony.model.SymphonyMessage;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -8,6 +8,7 @@ import launchToolbox from "./commands/misc/launch-toolbox";
 import fs from 'fs';
 import createNotification from "./commands/create-notification";
 import createCommandHandler from "./commands/create-command-handler";
+import createBotNotification from "./commands/create-bot-notification";
 import chalk from "chalk";
 
 
@@ -39,6 +40,8 @@ const init = async (args) => {
         await createBot(options);
       } else if(options.bot === TEMPLATE_COMMANDS.HANDLER) {
         await createCommandHandler(options);
+      } else if (options.bot === TEMPLATE_COMMANDS.NOTIFICATION) {
+        await createBotNotification(options);
       } else {
         options.program.outputHelp();
       }
