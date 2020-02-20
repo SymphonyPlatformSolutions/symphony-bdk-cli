@@ -2,10 +2,16 @@ import inquirer from "inquirer";
 const chalk = require('chalk');
 import {notEmpty} from "../../utils/helper";
 
-export const HANDLER_TYPES = [
- 'Regular command',
- 'Symphony Elements',
-];
+export const HANDLER_TYPES = {
+  REGULAR_COMMAND: 'Regular command',
+  SYMPHONY_ELEMENTS: 'Symphony Elements',
+  AUTHENTICATION_HANDLER: 'Authentication',
+};
+
+export const AUTHENTICATION_TYPES = {
+  BASIC: 'Basic',
+  OAUTH_V2: 'Oauth V2',
+};
 
 async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the following question'));
@@ -16,7 +22,17 @@ async function promptForMissingOptions(options) {
       type: 'list',
       name: 'type',
       message: 'Would you like to use a Regular Command Handler or a Symphony Elements handler?',
-      choices: HANDLER_TYPES,
+      choices: Object.keys(HANDLER_TYPES).map(key => HANDLER_TYPES[key]),
+    });
+  }
+
+  if (!options.authType) {
+    questions.push({
+      type: 'list',
+      name: 'authType',
+      message: 'Which authentication model are you using?',
+      choices: Object.keys(AUTHENTICATION_TYPES).map(key => AUTHENTICATION_TYPES[key]),
+      when: (responses) => responses.type === HANDLER_TYPES.AUTHENTICATION_HANDLER,
     });
   }
 
@@ -47,6 +63,7 @@ async function promptForMissingOptions(options) {
     ...options,
     commandName: options.commandName || answers.commandName,
     type: options.type || answers.type,
+    authType: options.authType || answers.authType,
     formId: options.formId || answers.formId,
   };
 }
