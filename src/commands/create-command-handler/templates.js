@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import ${basePackage}.internal.command.CommandHandler;
 import ${basePackage}.internal.command.model.BotCommand;
-import ${basePackage}.internal.message.model.SymphonyMessage;
+import ${basePackage}.internal.symphony.model.SymphonyMessage;
 
 public class ${commandName}CommandHandler extends CommandHandler {
 
@@ -100,4 +100,3 @@ export const customSymphonyElementsTemplate = `<form id="{{form_id}}">
   <button name="confirm" type="action">Confirm</button>
 </form>
 `;
-
