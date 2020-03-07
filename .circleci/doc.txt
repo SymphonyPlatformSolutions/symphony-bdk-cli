@@ -1,4 +1,4 @@
-We have a new project here sms-sdk-cli and will need the following:
+We have a new project here symphony-sdk-cli and will need the following:
  - A repo 
  - A token to @symphonyplatformsolutions org with Read and Publish permissions, as this tool will need to be published to npm
 

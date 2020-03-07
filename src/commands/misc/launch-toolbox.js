@@ -8,9 +8,9 @@ import fs from 'fs';
 import {spinnerStart, spinnerStop} from "../../utils/spinner";
 
 
-const repoUrl = "SymphonyPlatformSolutions/sms-sdk-toolbox-ui#develop";
+const repoUrl = "SymphonyPlatformSolutions/symphony-sdk-toolbox-ui#develop";
 
-const cliFolderPath = (`${process.env.HOME}/.sms-sdk-cli`);
+const cliFolderPath = (`${process.env.HOME}/.symphony-sdk-cli`);
 const toolboxPath = `${cliFolderPath}/toolbox`;
 
 const launchToolbox = async (options) => {

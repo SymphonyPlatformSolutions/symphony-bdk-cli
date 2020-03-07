@@ -1,10 +1,10 @@
 {
-  "name": "sms-sdk-cli",
+  "name": "symphony-sdk-cli",
   "version": "1.0.0",
-  "description": "Symphony Market Solutions CLI to bootstrap new projects.",
+  "description": "Symphony CLI to bootstrap new projects.",
   "main": "./bin/index.js",
   "bin": {
-    "sms-sdk-cli": "./bin/index.js"
+    "symphony-sdk-cli": "./bin/index.js"
   },
   "files": [
     "./bin/index.js"
@@ -18,14 +18,14 @@
     "cli",
     "create-extension-app"
   ],
-  "repository": "git@github.com:SymphonyPlatformSolutions/sms-sdk-cli.git",
-  "author": "Market Solutions",
+  "repository": "git@github.com:SymphonyPlatformSolutions/symphony-sdk-cli.git",
+  "author": "Symphony",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SymphonyPlatformSolutions/sms-sdk-cli/issues"
+    "url": "https://github.com/SymphonyPlatformSolutions/symphony-sdk-cli/issues"
   },
   "private": true,
-  "homepage": "https://github.com/SymphonyPlatformSolutions/sms-sdk-cli#readme",
+  "homepage": "https://github.com/SymphonyPlatformSolutions/symphony-sdk-cli#readme",
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^3.0.2",
