@@ -79,7 +79,7 @@ export default async (options) => {
     const validationJsonBuffer = fs.readFileSync(validationJsonPath);
     const packageJson = JSON.parse(validationJsonBuffer);
 
-    if(!packageJson.dependencies['symphony-sdk-mock-client']) {
+    if(!packageJson.dependencies['symphony-bdk-mock-client']) {
       throw new Error('e');
     }
 

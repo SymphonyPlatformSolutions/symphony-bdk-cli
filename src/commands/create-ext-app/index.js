@@ -6,7 +6,7 @@ import { extensionAppFilesFlow } from "../../utils/files/files";
 import fs from 'fs';
 const execSync = require('child_process').execSync;
 
-const repoUrl = "SymphonyPlatformSolutions/symphony-ext-app-template#develop";
+const repoUrl = "SymphonyPlatformSolutions/symphony-bdk-app-template#develop";
 
 export default async (options) => {
   console.log(chalk.bold(

@@ -22,7 +22,7 @@ program
     'bot account ')
   .option('--app [action]','Creates an extension app boilerplate, add "message-template" as an argument, to add a new message template', false)
   .option('--bot [action]', 'Creates a Symphony bot application, add "command-handler" as an argument to add a new Command to your bot or "message-template" to add a template', false)
-  .option('--toolbox', 'Launches the toolbox-ui library on http://localhost:6006', false)
+  .option('--toolkit', 'Launches the ui-toolkit library on http://localhost:6006', false)
   .option('--run', 'Starts the newly created project when used with --app and --bot ', false)
   .option('--gen-certs', 'Generates the RSA key pair and outputs a valid JWT token for immediate testing', false)
   .option('--check-deps', 'Checks if the system has all the required dependencies to run the project', false);
@@ -30,7 +30,7 @@ program
 var commands;
 
 const getCommand = (options) => {
-  return options.toolbox
+  return options.toolkit
       ? COMMANDS.TOOLBOX
       : options.app
           ? COMMANDS.CREATE_EXT_APP
