@@ -66,7 +66,7 @@ if required is the project name. these commands being:
 * ```symphony-bdk-cli --bot``` which creates an bot app (Java)
 * ```symphony-bdk-cli --bot command-handler``` Creates a new Command handler for an existing bot
 * ```symphony-bdk-cli --bot message-template``` Creates Templates on a bot, and also creates a command handler to it if required.
-* ```symphony-bdk-cli --toolbox``` which launches the Symphony Component Library in your browser
+* ```symphony-bdk-cli --toolkit``` which launches the Symphony Component Library in your browser
 * ```--run``` this is a command to be appended with the above e.g: ```symphony-bdk-cli --app --run```,
 if present it will not only have it bootstraped but also start it for you.
 * ```symphony-bdk-cli --check-deps``` An utility command, that checks all the required dependencies for you.
