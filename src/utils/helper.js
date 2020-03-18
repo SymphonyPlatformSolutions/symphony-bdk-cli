@@ -2,6 +2,10 @@ export const notEmpty = (value) => value && value.length > 0;
 
 export const validJavaPackage = (value) => value && value.length > 0 && value.indexOf(' ') <= 0;
 
+export const validateJavaProjectName = (str) => {
+ return str.indexOf('-') === -1;
+};
+
 export const isUpperCase = (str) => {
   if (!str || !str.length) {
     return false;
