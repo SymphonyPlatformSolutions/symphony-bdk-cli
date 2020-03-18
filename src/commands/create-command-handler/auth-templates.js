@@ -3,15 +3,16 @@ import {AUTHENTICATION_TYPES} from "./questions";
 const genericAuthHandlerTemplate = (type) => (basePackage, commandName) => `
 package ${basePackage}.command;
 
-import ${basePackage}.command.auth.${commandName}${type}AuthenticationProvider;
-import ${basePackage}.internal.command.AuthenticatedCommandHandler;
-import ${basePackage}.internal.command.config.CommandAuthenticationProvider;
-import ${basePackage}.internal.command.model.AuthenticationContext;
-import ${basePackage}.internal.command.model.BotCommand;
-import ${basePackage}.internal.symphony.model.SymphonyMessage;
-
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+
+
+import com.symphony.bdk.bot.sdk.command.AuthenticatedCommandHandler;
+import com.symphony.bdk.bot.sdk.command.config.CommandAuthenticationProvider;
+import com.symphony.bdk.bot.sdk.command.model.AuthenticationContext;
+import com.symphony.bdk.bot.sdk.command.model.BotCommand;
+import com.symphony.bdk.bot.sdk.symphony.model.SymphonyMessage;
+
 
 /**
  * {@link AuthenticatedCommandHandler} sample using {@link ${type}AuthenticationProvider}
@@ -20,22 +21,27 @@ import java.util.regex.Pattern;
 public class ${commandName}CommandHandler extends AuthenticatedCommandHandler {
 
   @Override
-  public void handle(BotCommand command, SymphonyMessage commandResponse,
-      AuthenticationContext authenticationContext) {
-
-    commandResponse.setMessage("<b>User authenticated</b>. "
-        + "Please add the following HTTP header to your requests:<br /><br />"
-        + "<code>Authorization: "
-        + authenticationContext.getAuthScheme() + " "
-        + authenticationContext.getAuthToken() + "</code>");
-  }
-
-  @Override
   protected Predicate<String> getCommandMatcher() {
     return Pattern
         .compile("^@"+ getBotName() + " /${commandName.toLowerCase()}")
         .asPredicate();
   }
+
+  /**
+   * Invoked when command matches
+   */
+  @Override
+  public void handle(BotCommand command, SymphonyMessage commandResponse,
+      AuthenticationContext authenticationContext) {
+
+     commandResponse.setMessage("<b>User authenticated</b>. "
+        + "Please add the following HTTP header to your requests:<br /><br />"
+        + "<code>Authorization: "
+        + authenticationContext.getAuthScheme() + " "
+        + authenticationContext.getAuthToken() + "</code>");
+
+  }
+
 }
 `;
 
@@ -43,23 +49,22 @@ const BasicAuthProviderTemplate = (basePackage, commandName) => `
 package ${basePackage}.command.auth;
 
 import java.util.Base64;
-import ${basePackage}.internal.command.AuthenticationProvider;
-import ${basePackage}.internal.command.model.AuthenticationContext;
-import ${basePackage}.internal.command.model.BotCommand;
-import ${basePackage}.internal.symphony.model.SymphonyMessage;
+
+import com.symphony.bdk.bot.sdk.command.AuthenticationProvider;
+import com.symphony.bdk.bot.sdk.command.model.AuthenticationContext;
+import com.symphony.bdk.bot.sdk.command.model.BotCommand;
+import com.symphony.bdk.bot.sdk.symphony.model.SymphonyMessage;
 
 /**
- * Sample code. Implementation of {@link AuthenticationProvider} to offer basic
- * authentication.
- *
+ * Sample code. Implementation of {@link AuthenticationProvider} to offer basic authentication.
  */
 public class ${commandName}BasicAuthenticationProvider implements AuthenticationProvider {
 
   private String username = "john.doe@symphony.com";
   private String password = "strongpass";
 
-  @Override
-  public AuthenticationContext getAuthenticationContext(String userId) {
+   @Override
+  public AuthenticationContext getAuthenticationContext(Long userId) {
     AuthenticationContext authContext = new AuthenticationContext();
     authContext.setAuthScheme("Basic");
     authContext.setAuthToken(findCredentialsByUserId(userId));
@@ -76,7 +81,7 @@ public class ${commandName}BasicAuthenticationProvider implements Authentication
 
   // Just a simple example. Ideally, implement a service to handle credentials
   // retrieval.
-  private String findCredentialsByUserId(String userId) {
+  private String findCredentialsByUserId(Long userId) {
     String credential = username + ":" + password;
     return new String(Base64.getEncoder().encode(
         credential.getBytes()));
