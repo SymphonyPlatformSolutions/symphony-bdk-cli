@@ -12,7 +12,7 @@ const getDirectories = (src, callback) => new Promise((resolve) => glob(`${src}/
   resolve(list);
 }));
 
-const basePackage = ['com','symphony','ms','bot', 'sdk'];
+const basePackage = ['com','symphony','bdk','bot', 'template'];
 
 const tmpSrcFolder = './.tmpMoveSrc';
 const tmpTestSrcFolder = './.tmpTestMoveSrc';
@@ -41,13 +41,12 @@ export async function createBotApp(options) {
 
   const botJavaFilesPath = `${options.targetDirectory}/src/main/java`;
   const botJavaTestsPath = `${options.targetDirectory}/src/test/java`;
-  console.log(botJavaFilesPath, botJavaTestsPath);
 
   processPackageNames(options, botJavaFilesPath, botJavaTestsPath);
   const list = await getDirectories(`${options.targetDirectory}/src`);
   const renamePackageOptions = {
     files: list,
-    from: /com.symphony.ms.bot.sdk/g,
+    from: /com.symphony.bdk.bot.template/g,
     to: `${options.basePackage}.${options.projectName.toLowerCase()}`,
   };
 
@@ -55,7 +54,7 @@ export async function createBotApp(options) {
 
   const pomFilePath = `${options.targetDirectory}/pom.xml`;
   const botConfigPath = `${options.targetDirectory}/src/main/resources/bot-config.json`;
-  const applicationYamlPath = `${options.targetDirectory}/src/main/resources/application-dev.yaml`;
+  const applicationYamlPath = `${options.targetDirectory}/src/main/resources/application.yaml`;
 
   try {
     const pomXml = fs.readFileSync(pomFilePath);
@@ -86,14 +85,13 @@ export async function createBotApp(options) {
     throw new Error(`Error while processing ${botConfigPath}, with the following error: ${e}`);
   }
 
-    try {
+  try {
     const appYaml = YAML.load(applicationYamlPath);
     appYaml.server.servlet['display-name'] = options.projectName.toLowerCase();
     appYaml.server.servlet['context-path'] = `/${options.projectName.toLowerCase()}`;
     appYaml.logging.file = `\$\{resources\}/logs/${options.projectName.toLowerCase()}.log`;
     const yamlString = YAML.stringify(appYaml,5);
     fs.writeFileSync(applicationYamlPath, yamlString, 'utf-8');
-
   }catch (e) {
     throw new Error(`Error while processing ${applicationYamlPath}, with the following error: ${e}`);
   }
