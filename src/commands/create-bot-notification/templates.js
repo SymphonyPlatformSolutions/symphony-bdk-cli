@@ -2,14 +2,15 @@ import { NOTIFICATION_TEMPLATE_OPTIONS } from "./questions";
 
 const messageBuilder = (basePackage, commandName, handleTemplate, imports = '') => `package ${basePackage}.command;
 
-import ${basePackage}.internal.command.CommandHandler;
-import ${basePackage}.internal.command.model.BotCommand;
-import ${basePackage}.internal.symphony.model.SymphonyMessage;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+
+import com.symphony.bdk.bot.sdk.command.CommandHandler;
+import com.symphony.bdk.bot.sdk.command.model.BotCommand;
+import com.symphony.bdk.bot.sdk.symphony.model.SymphonyMessage;
+
 ${imports}
 
 public class ${commandName}CommandHandler extends CommandHandler {
