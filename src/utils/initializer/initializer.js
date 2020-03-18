@@ -23,7 +23,7 @@ export async function initializeBotApp() {
     {
       title: chalk.bold('Ran install dependencies'),
       task: () => {
-        execSync('mvn clean install -D skipTests=true');
+        execSync('mvn clean package');
       }
     },
   ]);
