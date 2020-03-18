@@ -1,15 +1,15 @@
-export const addNewCommandToHelp = (commandName) => `  <li><b>{{bot_mention}}</b> /${commandName.toLowerCase()} - auto generated command, please insert description</li>
-</ul>`;
+export const addNewCommandToHelp = (commandName) => `  private static final String[] DESCRIPTIONS = {
+      "/${commandName.toLowerCase()} - auto generated help message",`;
 
 export const genericCommandHandler = (basePackage, commandName) => `package ${basePackage}.command;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import ${basePackage}.internal.command.CommandHandler;
-import ${basePackage}.internal.command.model.BotCommand;
-import ${basePackage}.internal.symphony.model.SymphonyMessage;
+
+import com.symphony.bdk.bot.sdk.command.CommandHandler;
+import com.symphony.bdk.bot.sdk.command.model.BotCommand;
+import com.symphony.bdk.bot.sdk.symphony.model.SymphonyMessage;
 
 public class ${commandName}CommandHandler extends CommandHandler {
 
@@ -19,16 +19,16 @@ public class ${commandName}CommandHandler extends CommandHandler {
         .compile("^@"+ getBotName() + " /${commandName.toLowerCase()}")
         .asPredicate();
   }
-
+  
+  /**
+   * Invoked when command matches
+   */
   @Override
   public void handle(BotCommand command, SymphonyMessage response) {
+    Map<String, String> variables = new HashMap<>();
+    variables.put("user", command.getUser().getDisplayName());
 
-    String myMessage = "<p style='margin-bottom:6px;'>Hey there my new command!</p>";
-
-    Map<String, Object> data = new HashMap<>();
-    data.put("content", "this is data that came from the bot");
-
-    response.setEnrichedMessage(myMessage, "${basePackage}.${commandName.toLowerCase()}", data, "1.0");
+    response.setTemplateMessage("Auto generated command ${commandName.toLowerCase()}, Hello, <b>{{user}}</b>", variables);
   }
 }
 `;
@@ -36,15 +36,15 @@ public class ${commandName}CommandHandler extends CommandHandler {
 
 export const customSymphonyElementsHandler = (basePackage, commandName, commandNameKebabCased) => `package ${basePackage}.elements;
 
-import ${basePackage}.internal.command.model.BotCommand;
-import ${basePackage}.internal.elements.ElementsHandler;
-import ${basePackage}.internal.event.model.SymphonyElementsEvent;
-import ${basePackage}.internal.symphony.model.SymphonyMessage;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+
+import com.symphony.bdk.bot.sdk.command.model.BotCommand;
+import com.symphony.bdk.bot.sdk.elements.ElementsHandler;
+import com.symphony.bdk.bot.sdk.event.model.SymphonyElementsEvent;
+import com.symphony.bdk.bot.sdk.symphony.model.SymphonyMessage;
 
 /**
  * Sample code. Implementation of {@link ElementsHandler} which renders a Symphony elements form and
@@ -76,7 +76,7 @@ public class ${commandName}Handler extends ElementsHandler {
   public void displayElements(BotCommand command,
       SymphonyMessage elementsResponse) {
     Map<String, String> data = new HashMap<>();
-    data.put("form_id", FORM_ID);
+    data.put("form_id", getElementsFormId());
     elementsResponse.setTemplateFile("${commandNameKebabCased}", data);
   }
 
@@ -84,8 +84,7 @@ public class ${commandName}Handler extends ElementsHandler {
    * Invoked when elements form is submitted
    */
   @Override
-  public void handleAction(SymphonyElementsEvent event,
-      SymphonyMessage elementsResponse) {
+  public void handleAction(SymphonyElementsEvent event, SymphonyMessage elementsResponse) {
     Map<String, Object> formValues = event.getFormValues();
     String response = formValues.get(SAMPLE_INPUT_ID).toString();
     elementsResponse.setMessage("Form registered successfully, here's what you've typed: "+ response);
