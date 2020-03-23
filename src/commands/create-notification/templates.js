@@ -169,7 +169,7 @@ export const notificationTemplateEntity = (notificationName) =>`export const ENR
       title: 'Something Interesting occurred!',
       content: {
         header: 'this is an notification sample expand to learn more',
-        body: 'it exemplifies the capabilities we have using the sdk',
+        body: 'it exemplifies the capabilities we have using the bdk',
       },
       showStatusBar: true,
       comment: {
@@ -190,7 +190,7 @@ export const notificationTemplateEntity = (notificationName) =>`export const ENR
       },
       labels: [
         { text: 'Example' },
-        { text: 'SDK' },
+        { text: 'BDK' },
         { text: 'MS' },
       ],
     },

@@ -1,13 +1,13 @@
 {
-  "name": "sms-sdk-cli",
-  "version": "1.0.0",
-  "description": "Symphony Market Solutions CLI to bootstrap new projects.",
-  "main": "./bin/index.js",
+  "name": "symphony-bdk-cli",
+  "version": "1.0.5",
+  "description": "Symphony CLI to bootstrap new projects.",
+  "main": "index.js",
   "bin": {
-    "sms-sdk-cli": "./bin/index.js"
+    "symphony-bdk-cli": "index.js"
   },
   "files": [
-    "./bin/index.js"
+    "./src"
   ],
   "scripts": {
     "start": "node ./bin/index.js",
@@ -18,35 +18,31 @@
     "cli",
     "create-extension-app"
   ],
-  "repository": "git@github.com:SymphonyPlatformSolutions/sms-sdk-cli.git",
-  "author": "Market Solutions",
-  "license": "ISC",
+  "repository": "git@github.com:SymphonyPlatformSolutions/symphony-bdk-cli.git",
+  "author": "Symphony",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SymphonyPlatformSolutions/sms-sdk-cli/issues"
+    "url": "https://github.com/SymphonyPlatformSolutions/symphony-bdk-cli/issues"
   },
-  "private": true,
-  "homepage": "https://github.com/SymphonyPlatformSolutions/sms-sdk-cli#readme",
+  "homepage": "https://github.com/SymphonyPlatformSolutions/symphony-bdk-cli#readme",
   "dependencies": {
     "chalk": "^2.4.2",
+    "command-exists": "^1.2.8",
     "commander": "^3.0.2",
+    "download-git-repo": "^3.0.2",
     "esm": "^3.2.25",
+    "fs-extra": "^8.1.0",
     "inquirer": "^7.0.0",
     "listr": "^0.14.3",
-    "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
+    "njwt": "^1.0.0",
     "ora": "^3.4.0",
     "pkg-install": "^1.0.0",
     "replace-in-files": "^2.0.3",
     "request": "^2.88.0",
-    "xml2js": "^0.4.22",
-    "yamljs": "^0.3.0",
-    "download-git-repo": "^3.0.2"
-  },
-  "devDependencies": {
-    "command-exists": "^1.2.8",
-    "fs-extra": "^8.1.0",
-    "njwt": "^1.0.0",
     "terminal-image": "^0.2.0",
-    "terminal-link": "^2.0.0"
+    "terminal-link": "^2.0.0",
+    "xml2js": "^0.4.22",
+    "yamljs": "^0.3.0"
   }
 }

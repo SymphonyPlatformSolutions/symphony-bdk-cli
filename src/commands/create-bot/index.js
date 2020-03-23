@@ -8,7 +8,7 @@ import {initializeBotApp} from "../../utils/initializer/initializer";
 import {botFilesFlow} from "../../utils/files/files";
 import fs from 'fs';
 
-const repoUrl = "SymphonyPlatformSolutions/sms-bot-sdk#develop";
+const repoUrl = "SymphonyPlatformSolutions/symphony-bdk-bot-template-java#master";
 
 export default async (options) => {
   console.log(chalk.bold('Setting up a new Bot application'));

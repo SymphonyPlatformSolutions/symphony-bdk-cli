@@ -32,10 +32,12 @@ export default async (options) => {
     const basePackage = parsedData.project.groupId[0];
     const artifactId = parsedData.project.artifactId[0].toLowerCase();
     const javaBasePackage = `${basePackage}.${artifactId}`;
-    const botHelpCommandHandlerPath = `${botRoot}/src/main/resources/templates/help-response.hbs`;
-    const botCommandHandlerRootPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/command/${awnsers.commandName}CommandHandler.java`;
-    const botCommandHandlerAuthRootPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/command/auth`;
-    const botSymphonyElementsCommandHandlerPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/elements/${awnsers.commandName}Handler.java`;
+    const completePackagePath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}`;
+
+    const botHelpCommandHandlerPath = `${completePackagePath}/command/HelpCommandHandler.java`;
+    const botCommandHandlerRootPath = `${completePackagePath}/command/${awnsers.commandName}CommandHandler.java`;
+    const botCommandHandlerAuthRootPath = `${completePackagePath}/command/auth`;
+    const botSymphonyElementsCommandHandlerPath = `${completePackagePath}/elements/${awnsers.commandName}Handler.java`;
     const botTemplatesRootPath = `${botRoot}/src/main/resources/templates`;
 
     switch (awnsers.type) {
@@ -71,7 +73,7 @@ export default async (options) => {
 
     const helpCommand = {
       files: [ botHelpCommandHandlerPath ],
-      from: new RegExp(/<\/ul>/),
+      from: new RegExp(/private static final String\[\] DESCRIPTIONS \= \{/),
       to: addNewCommandToHelp(awnsers.commandName),
     };
 

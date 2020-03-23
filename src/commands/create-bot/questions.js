@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 const chalk = require('chalk');
-import { notEmpty, validJavaPackage } from "../../utils/helper";
+import {notEmpty, validateJavaProjectName, validJavaPackage} from "../../utils/helper";
 
 async function promptForMissingOptions(options) {
   console.log(chalk.bold('Please answer the following questions'));
@@ -19,7 +19,7 @@ async function promptForMissingOptions(options) {
     questions.push({
       name: 'botUsername',
       message: 'What\'s the bot username? (required)',
-      validate: notEmpty,
+      validate: (str) => notEmpty(str) && validateJavaProjectName(str),
       default: null,
     })
   }

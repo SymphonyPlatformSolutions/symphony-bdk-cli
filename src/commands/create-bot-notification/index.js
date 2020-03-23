@@ -27,8 +27,9 @@ export default async (options) => {
     const basePackage = parsedData.project.groupId[0];
     const artifactId = parsedData.project.artifactId[0].toLowerCase();
     const javaBasePackage = `${basePackage}.${artifactId}`;
-    const botHelpCommandHandlerPath = `${botRoot}/src/main/resources/templates/help-response.hbs`;
-    const botCommandHandlerRootPath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}/command/${awnsers.notificationName}CommandHandler.java`;
+    const completePackagePath = `${botRoot}/src/main/java/${basePackage.split('.').join('/')}/${artifactId}`;
+    const botHelpCommandHandlerPath = `${completePackagePath}/command/HelpCommandHandler.java`;
+    const botCommandHandlerRootPath = `${completePackagePath}/command/${awnsers.notificationName}CommandHandler.java`;
     const botTemplatesRootPath = `${botRoot}/src/main/resources/templates`;
     const templatePath = `${botTemplatesRootPath}/${toKebabCase(awnsers.notificationName)}.hbs`;
 
@@ -49,7 +50,7 @@ export default async (options) => {
 
       const helpCommand = {
         files: [ botHelpCommandHandlerPath ],
-        from: new RegExp(/<\/ul>/),
+        from: new RegExp(/private static final String\[\] DESCRIPTIONS \= \{/),
         to: addNewCommandToHelp(awnsers.notificationName),
       };
 
