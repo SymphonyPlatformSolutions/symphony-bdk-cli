@@ -5,7 +5,7 @@ const getConfigString = (options) => {
   Object.defineProperties(APP_CONFIG,
     {
       API_ROOT_URL: {
-        value: \`https://\${window.location.host}/${options.appId.toLowerCase()}\`,
+        value: 'http://localhost:3000',
         writable: false,
       },
       API_EXT_URL: {
