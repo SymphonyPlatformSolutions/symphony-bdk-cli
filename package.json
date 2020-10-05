@@ -1,6 +1,6 @@
 {
   "name": "symphony-bdk-cli",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Symphony CLI to bootstrap new projects.",
   "main": "index.js",
   "bin": {
@@ -18,7 +18,10 @@
     "cli",
     "create-extension-app"
   ],
-  "repository": "git@github.com:SymphonyPlatformSolutions/symphony-bdk-cli.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/SymphonyPlatformSolutions/symphony-bdk-cli.git"
+  },
   "author": "Symphony",
   "license": "MIT",
   "bugs": {
@@ -44,5 +47,6 @@
     "terminal-link": "^2.0.0",
     "xml2js": "^0.4.22",
     "yamljs": "^0.3.0"
-  }
+  },
+  "devDependencies": {}
 }
