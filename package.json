@@ -1,13 +1,13 @@
 {
   "name": "symphony-bdk-cli",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Symphony CLI to bootstrap new projects.",
   "main": "index.js",
   "bin": {
     "symphony-bdk-cli": "index.js"
   },
   "files": [
-    "./src"
+    "src"
   ],
   "scripts": {
     "start": "node ./bin/index.js",
