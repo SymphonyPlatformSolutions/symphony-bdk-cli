@@ -7,7 +7,7 @@ export async function getTemplateProject(repoUrl, absoluteTargetFolder) {
   spinnerStart(chalk.bold('Getting latest boilerplate application'));
   try {
     await new Promise((Resolve, Reject) => {
-      download(repoUrl, absoluteTargetFolder, { clone: true }, function (err) {
+      download(repoUrl, absoluteTargetFolder, { clone: false }, function (err) {
       if (err) {
         console.log(err);
         spinnerError(err);
